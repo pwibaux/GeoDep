@@ -11,7 +11,8 @@ Owner: Pauline Wibaux (IFE-CEPII). Working language for the app: English.
 - `app.R`: the whole app in a single file (UI, CSS, JS, server), about 2,300 lines. **The file must be named `app.R`** for deployment.
 - `1_Data/geodep_shiny_inputs.rds`: all the input data, loaded at the top of `app.R` with a relative path. Do not use `here::i_am()` or `here()`, because they break on the server.
 - **Data pipeline.** First, `update_data.R` copies `geodep_M_hs22.dta` and `geodep_X_hs22.dta` from Dropbox (`DROPBOX_DIR` in `.Renviron`) to `1_Data/geodep_M_hs22.rds` and `geodep_X_hs22.rds`. Then `preparation.R` (formerly `preparation.qmd`) builds `geodep_shiny_inputs.rds`. Run both with the project folder as the working directory.
-  - Do not rename variables, and keep the double filter on `dependent` and `c4`: with future data (e.g. 2025), the two may diverge.
+  - `master.R` runs the four steps in order (`update_data.R`, `preparation.R`, the app locally, `deploy.R`), each switched on or off with a `RUN_*` flag at the top. `RUN_DEPLOY` is `FALSE` by default.
+  - Do not rename variables, and keep the double filter on `dependent_M`/`dependent_X` and `c4`: with future data (e.g. 2025), the two may diverge.
 - `www/`: optional. The logos are embedded in `app.R` as base64 data URIs (`LOGO_IFE_FULL`, `LOGO_IFE_MARK`), so `www/` is not needed.
 
 ## Page structure

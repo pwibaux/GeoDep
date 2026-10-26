@@ -9,7 +9,7 @@ if (!nzchar(Sys.getenv("DROPBOX_DIR")))
   stop("DROPBOX_DIR is not set. Run setwd() to the project folder, or restart R from it.")
 
 update_dataset <- function(stata_file, rds_file) {
-  src <- file.path(Sys.getenv("DROPBOX_DIR"), "CEPII/Dependence/GeoDep_2024/Data/old", stata_file)
+  src <- file.path(Sys.getenv("DROPBOX_DIR"), "CEPII/Dependence/GeoDep_2024/Data/final", stata_file)
   if (!file.exists(src)) stop("Dataset not found. Check DROPBOX_DIR in .Renviron: ", src)
   dat <- read_dta(src)
   dat <- zap_labels(dat)   # or as_factor(dat) to keep Stata value labels as factors

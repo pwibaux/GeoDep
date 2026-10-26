@@ -389,9 +389,9 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "c2_M -- Level of concentration of world exports\n",
       "c3_M -- Substitutability of exports by domestic supply\n",
       "c4_M -- Criteria 4: c1 > 0.4 & c2 > 0.4 & c3 > 1 = 2/3 previous years\n",
-      "first_odpt -- ISO code of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
-      "share_odpt -- Share of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
-      "dependent -- =1 if [c1 > 0.4 & c2 > 0.4 & c3 > 1 & c4 = 1], 0 otherwise\n",
+      "first_o -- ISO code of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
+      "share_M_odpt -- Share of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
+      "dependent_M -- =1 if [c1 > 0.4 & c2 > 0.4 & c3 > 1 & c4 = 1], 0 otherwise\n",
       "sect_crm -- =1 if the HS6 product belongs to CRM UNCTAD list, 0 otherwise\n",
       "sect_dual_use -- =1 if the HS6 product belongs to Dual use EU list, 0 otherwise\n",
       "sect_health -- =1 if the HS6 product belongs to Health nomenclature list, 0 otherwise\n",
@@ -425,9 +425,9 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "c2_X -- Level of concentration of world imports\n",
       "c3_X -- Substitutability of exports by domestic demand\n",
       "c4_X -- Criteria 4: c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 = 2/3 previous years\n",
-      "first_dpto -- ISO code of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
-      "share_dpto -- Share of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
-      "dependent -- =1 if [c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 & c4_X = 1], 0 otherwise\n\n",
+      "first_d -- ISO code of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
+      "share_X_odpt -- Share of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
+      "dependent_X -- =1 if [c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 & c4_X = 1], 0 otherwise\n\n",
       "Additional useful information : Not applicable\n\n",
       "Example of 1 line : Not applicable\n\n",
       "Licence : Creative Commons BY NC SA\n\n",
@@ -2199,14 +2199,16 @@ server <- function(input, output, session) {
   partner_sector_chart_data <- function(iso1, direction = "import", top_n = 10, sector = "all") {
     if (direction == "import") {
       base        <- imports_final |> filter(iso_d == iso1)
-      partner_col <- "first_odpt"
+      partner_col <- "first_o"
+      dep_col     <- "dependent_M"
     } else {
       base        <- exports_final |> filter(iso_o == iso1)
-      partner_col <- "first_dpto"
+      partner_col <- "first_d"
+      dep_col     <- "dependent_X"
     }
     
-    if ("dependent" %in% names(base)) {
-      base <- base |> filter(dependent == 1)
+    if (dep_col %in% names(base)) {
+      base <- base |> filter(.data[[dep_col]] == 1)
     }
     
     ## sector filter (import dependencies only: export ones are not sector-tagged)
@@ -2515,7 +2517,7 @@ server <- function(input, output, session) {
       total_col   <- "import_dpt"
       total_label <- "Total Imports (World, k$)"
       partner_label  <- "First exporter (% share)"
-      partner_col <- "first_odpt"
+      partner_col <- "first_o"
       value_col   <- "imports"
       match_col   <- "iso_o"
     } else {
@@ -2523,7 +2525,7 @@ server <- function(input, output, session) {
       total_col   <- "export_opt"
       total_label <- "Total Exports (World, k$)"
       partner_label  <- "First destination (% share)"
-      partner_col <- "first_dpto"
+      partner_col <- "first_d"
       value_col   <- "imports"
       match_col   <- "iso_d"
     }
@@ -2671,14 +2673,14 @@ server <- function(input, output, session) {
       
       if (length(selection) == 2) {
         iso2   <- selection[2]
-        result <- result |> filter(first_odpt == iso2)
+        result <- result |> filter(first_o == iso2)
       }
     } else {
       result <- full_data |> filter(iso_o == iso1)
       
       if (length(selection) == 2) {
         iso2   <- selection[2]
-        result <- result |> filter(first_dpto == iso2)
+        result <- result |> filter(first_d == iso2)
       }
     }
     

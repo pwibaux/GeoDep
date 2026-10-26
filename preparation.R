@@ -26,8 +26,8 @@ colnames(hs6_description)[2] <- "hs6"
 ## 1. Imports (GeoDep_M)
 ## -----------------------------------------------------------------------
 ## One row per (importer, HS6): the destination's total import value (import_dpt),
-## the four dependency criteria (c1_M to c4_M), the dependent flag, the identity
-## and share of the leading supplier (first_odpt, share_odpt), and the sect_* flags.
+## the four dependency criteria (c1_M to c4_M), the dependent_M flag, the identity
+## and share of the leading supplier (first_o, share_M_odpt), and the sect_* flags.
 ## 1_Data/geodep_M_hs22.rds is written by update_data.R (copy of the Dropbox .dta)
 
 imports_final <- readRDS("1_Data/geodep_M_hs22.rds") |>
@@ -41,8 +41,8 @@ imports_final <- readRDS("1_Data/geodep_M_hs22.rds") |>
 ## 2. Exports (GeoDep_X)
 ## -----------------------------------------------------------------------
 ## The symmetric export-side table: one row per (exporter, HS6), with export_opt,
-## c1_X to c4_X, dependent, and the leading destination's identity and share
-## (first_dpto, share_dpto). No sector columns.
+## c1_X to c4_X, dependent_X, and the leading destination's identity and share
+## (first_d, share_X_odpt). No sector columns.
 ## 1_Data/geodep_X_hs22.rds is written by update_data.R (copy of the Dropbox .dta)
 
 exports_final <- readRDS("1_Data/geodep_X_hs22.rds") |>
@@ -118,9 +118,9 @@ world_polygons <- world_polygons |>
 ## Country menu: only countries that appear in the trade data
 trade_isos <- c(
   imports_final$iso_d,
-  imports_final$first_odpt,
+  imports_final$first_o,
   exports_final$iso_o,
-  exports_final$first_dpto
+  exports_final$first_d
 ) |>
   unique() |>
   na.omit() |>
@@ -137,33 +137,33 @@ country_choices_ui <- c("Select a country..." = "", country_choices)
 
 ## Dependent products, with the leading partner
 dep_import_base <- imports_final |>
-  filter(dependent == 1) |>
+  filter(dependent_M == 1) |>
   mutate(
     iso_d   = to_eun(iso_d),
-    iso_o   = to_eun(first_odpt),
-    imports = import_dpt * share_odpt / 100
+    iso_o   = to_eun(first_o),
+    imports = import_dpt * share_M_odpt / 100
   ) |>
   select(iso_d, iso_o, hs6, imports, import_dpt,
-         Description, starts_with("sect_"), first_odpt)
+         Description, starts_with("sect_"), first_o)
 
 dep_export_base <- exports_final |>
-  filter(dependent == 1) |>
+  filter(dependent_X == 1) |>
   mutate(
     iso_o   = to_eun(iso_o),
-    iso_d   = to_eun(first_dpto),
-    imports = export_opt * share_dpto / 100
+    iso_d   = to_eun(first_d),
+    imports = export_opt * share_X_odpt / 100
   ) |>
-  select(iso_o, iso_d, hs6, Description, imports, export_opt, first_dpto)
+  select(iso_o, iso_d, hs6, Description, imports, export_opt, first_d)
 
 ## All traded products per country (denominators of the map shares)
 traded_by_country <- imports_final |>
   mutate(iso_d = to_eun(iso_d)) |>
-  select(iso_d, hs6, dependant_M_MC_t = dependent, c4_M_MC = c4_M,
+  select(iso_d, hs6, dependant_M_MC_t = dependent_M, c4_M_MC = c4_M,
          import_dpt, starts_with("sect_"))
 
 traded_by_country_export <- exports_final |>
   mutate(iso_o = to_eun(iso_o)) |>
-  select(iso_o, hs6, dependant_X_MC_t = dependent, c4_X_MC = c4_X,
+  select(iso_o, hs6, dependant_X_MC_t = dependent_X, c4_X_MC = c4_X,
          export_opt)
 
 ## Countries (EU = EUN) with trade data in each direction: on a partner map, these

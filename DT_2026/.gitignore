@@ -1,0 +1,13 @@
+# Sorties de Quarto : recréées à chaque compilation (le PDF est copié dans la Dropbox)
+*_files/
+.quarto/
+*.html
+*.pdf
+*.tex
+*.log
+
+# Chemin local de la Dropbox (DEPENDENCE_DIR)
+.Renviron
+
+/.quarto/
+**/*.quarto_ipynb

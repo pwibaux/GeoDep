@@ -1,0 +1,215 @@
+# Fichier écrit par Program/2_analysis/28_dt_numbers.do : ne pas modifier à la main.
+
+# --- 21
+conc_m_eu_from_chn: 994
+conc_m_chn_from_eu: 1117
+conc_m_eu_from_jpn: 40
+conc_m_jpn_from_eu: 694
+conc_m_eu_from_usa: 253
+conc_m_usa_from_eu: 836
+conc_x_eu_to_chn: 70
+conc_x_chn_to_eu: 171
+conc_x_eu_to_jpn: 18
+conc_x_jpn_to_eu: 260
+conc_x_eu_to_usa: 177
+conc_x_usa_to_eu: 215
+
+# --- 22
+year: 2024
+year_min: 2022
+baci_version: V202601
+thr_c1: 0.4
+thr_c2: 0.4
+thr_c3: 1
+n_countries: 200
+n_products: 5,585
+list_crm_n: 499
+list_crm_share: 12.0
+list_dual_use_n: 965
+list_dual_use_share: 34.2
+list_health_n: 558
+list_health_share: 9.9
+list_fert_n: 30
+list_fert_share: 0.6
+list_agri_n: 274
+list_agri_share: 3.7
+list_energy_n: 516
+list_energy_share: 25.8
+strat_n: 2,293
+strat_share: 68.0
+strat_prod_share: 41.1
+
+# --- 23
+m_eun_dep_all: 468
+m_eun_dep_strat: 155
+m_eun_share_strat: 7.2
+m_eun_top1_name: China
+m_eun_top1_n: 73
+m_chn_dep_all: 178
+m_chn_dep_strat: 64
+m_chn_share_strat: 11.0
+m_chn_top1_name: European Union
+m_chn_top1_n: 12
+m_usa_dep_all: 463
+m_usa_dep_strat: 133
+m_usa_share_strat: 10.3
+m_usa_top1_name: China
+m_usa_top1_n: 48
+m_jpn_dep_all: 531
+m_jpn_dep_strat: 174
+m_jpn_share_strat: 10.1
+m_jpn_top1_name: China
+m_jpn_top1_n: 80
+m_chn_sect_energy_n: 5
+m_chn_sect_energy_share: 1.0
+m_eun_sect_energy_n: 17
+m_eun_sect_energy_share: 3.3
+m_jpn_sect_energy_n: 15
+m_jpn_sect_energy_share: 2.9
+m_usa_sect_energy_n: 12
+m_usa_sect_energy_share: 2.4
+m_chn_sect_agrifood_n: 29
+m_chn_sect_agrifood_share: 9.7
+m_eun_sect_agrifood_n: 30
+m_eun_sect_agrifood_share: 9.9
+m_jpn_sect_agrifood_n: 43
+m_jpn_sect_agrifood_share: 14.6
+m_usa_sect_agrifood_n: 28
+m_usa_sect_agrifood_share: 9.2
+m_chn_sect_health_n: 11
+m_chn_sect_health_share: 2.0
+m_eun_sect_health_n: 60
+m_eun_sect_health_share: 10.8
+m_jpn_sect_health_n: 67
+m_jpn_sect_health_share: 12.9
+m_usa_sect_health_n: 56
+m_usa_sect_health_share: 10.0
+m_chn_sect_dual_use_n: 9
+m_chn_sect_dual_use_share: 0.9
+m_eun_sect_dual_use_n: 52
+m_eun_sect_dual_use_share: 5.4
+m_jpn_sect_dual_use_n: 51
+m_jpn_sect_dual_use_share: 5.4
+m_usa_sect_dual_use_n: 42
+m_usa_sect_dual_use_share: 4.4
+m_chn_sect_crm_n: 18
+m_chn_sect_crm_share: 3.6
+m_eun_sect_crm_n: 37
+m_eun_sect_crm_share: 7.4
+m_jpn_sect_crm_n: 35
+m_jpn_sect_crm_share: 7.2
+m_usa_sect_crm_n: 28
+m_usa_sect_crm_share: 5.6
+m_funnel_1: 749,507
+m_funnel_2: 578,934
+m_funnel_3: 101,441
+m_funnel_4: 93,894
+m_funnel_5: 71,259
+m_funnel_pct: 9.5
+m_first_n: 200
+m_first_chn_median: 48
+m_first_chn_mean: 41
+m_first_chn_eun: 63
+m_first_chn_usa: 45
+m_first_chn_jpn: 53
+m_first_eun_median: 15
+m_first_eun_mean: 21
+m_first_eun_chn: 29
+m_first_eun_usa: 21
+m_first_eun_jpn: 20
+m_first_usa_median: 2
+m_first_usa_mean: 8
+m_first_usa_eun: 6
+m_first_usa_chn: 11
+m_first_usa_jpn: 6
+m_first_oth_median: 21
+m_first_oth_mean: 30
+m_first_oth_eun: 31
+m_first_oth_chn: 60
+m_first_oth_usa: 34
+m_first_oth_jpn: 21
+
+# --- 24
+x_eun_dep: 51
+x_eun_share: 1.0
+x_eun_top1_name: China
+x_eun_top1_n: 12
+x_chn_dep: 76
+x_chn_share: 0.1
+x_chn_top1_name: European Union
+x_chn_top1_n: 13
+x_usa_dep: 76
+x_usa_share: 0.5
+x_usa_top1_name: European Union
+x_usa_top1_n: 15
+x_jpn_dep: 37
+x_jpn_share: 0.3
+x_jpn_top1_name: China
+x_jpn_top1_n: 7
+x_funnel_1: 431,413
+x_funnel_2: 316,649
+x_funnel_3: 8,918
+x_funnel_4: 5,207
+x_funnel_5: 3,027
+x_funnel_pct: 0.7
+x_first_n: 179
+x_first_eun_median: 16
+x_first_eun_mean: 23
+x_first_eun_chn: 17
+x_first_eun_usa: 20
+x_first_eun_jpn: 3
+x_first_chn_median: 14
+x_first_chn_mean: 19
+x_first_chn_eun: 24
+x_first_chn_usa: 14
+x_first_chn_jpn: 19
+x_first_usa_median: 0
+x_first_usa_mean: 10
+x_first_usa_eun: 16
+x_first_usa_chn: 9
+x_first_usa_jpn: 3
+x_first_oth_median: 49
+x_first_oth_mean: 48
+x_first_oth_eun: 61
+x_first_oth_chn: 74
+x_first_oth_usa: 66
+x_first_oth_jpn: 76
+
+# --- 25
+hhi_top_m_c1: 55
+hhi_top_m_c2: 60
+hhi_top_x_c1: 56
+hhi_top_x_c2: 60
+
+# --- 26
+recip_eun_n: 16
+recip_chn_n: 14
+recip_usa_n: 11
+recip_jpn_n: 7
+balance_chn_eun: 61
+balance_chn_jpn: 78
+balance_chn_usa: 44
+balance_eun_chn: -61
+balance_eun_jpn: 39
+balance_eun_usa: 8
+balance_jpn_chn: -78
+balance_jpn_eun: -39
+balance_jpn_usa: -12
+balance_usa_chn: -44
+balance_usa_eun: -8
+balance_usa_jpn: 12
+
+# --- 27
+m_dep_median: 384.5
+m_dep_max_name: South Korea
+m_dep_max_n: 567
+x_dep_median: 8
+supplier1_name: China
+supplier1_n: 31,570
+supplier1_share: 44.3
+supplier2_name: European Union
+supplier2_n: 15,278
+supplier2_share: 21.4
+supplier3_name: United States
+supplier3_n: 5,399
+supplier3_share: 7.6

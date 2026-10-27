@@ -1,0 +1,9 @@
+# Projet Quarto du document de travail "Trade dependencies".
+# Le fait d'être un projet permet à Quarto de lire _variables.yml
+# (chiffres du texte, écrit par 01_GeoDep_database/Program/2_analysis/28_dt_numbers.do).
+project:
+  type: default
+  render:
+    - trade_dependencies_geodep.qmd
+  # Après la compilation : copie du PDF dans la Dropbox (R/copy_pdf.R)
+  post-render: R/copy_pdf.R

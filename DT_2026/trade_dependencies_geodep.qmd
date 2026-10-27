@@ -1,0 +1,485 @@
+---
+title: "Trade dependencies - Geodep database"
+author:
+  - name: Clémence Huang
+  - name: Kévin Lefebvre
+  - name: Pauline Wibaux
+date: today
+bibliography: references.bib
+# Code R : ni messages ni avertissements dans le document (ex : chargement du tidyverse)
+execute:
+  message: false
+  warning: false
+# Titres des figures et des tableaux au-dessus ; source et note en dessous
+fig-cap-location: top
+tbl-cap-location: top
+# PDF : traits coupés sous les en-têtes de groupe des tableaux (ex : All sectors / Strategic sectors)
+filters:
+  - path: cmidrule.lua
+    at: post-render
+format:
+  pdf:
+    number-sections: true
+    toc: false
+    colorlinks: true
+    # Figures à leur place (pas de flottant) : la source et la note restent juste en dessous
+    fig-pos: "H"
+    # multirow : en-têtes sur deux lignes des tableaux réécrits par cmidrule.lua
+    include-in-header:
+      text: |
+        \usepackage{multirow}
+  html:
+    number-sections: true
+    toc: true
+---
+
+<!--
+CHIFFRES DU TEXTE : ne jamais taper un chiffre à la main. Écrire
+{{{< var nom >}}} (avec deux accolades au lieu de trois : ici, la troisième
+empêche Quarto de remplacer l'exemple) : Quarto le remplace par la valeur de
+_variables.yml (écrit par 01_GeoDep_database/Program/2_analysis/28_dt_numbers.do,
+relancé par le master).
+Exemple : "the EU depends on {{{< var m_eun_dep_all >}}} products".
+Pour voir les noms disponibles : ouvrir _variables.yml.
+-->
+
+```{=html}
+<style>
+/* Source et note sous les figures et les tableaux */
+.note { font-size: 0.85em; color: #555; margin-top: 0.3em; margin-bottom: 1.5em; }
+/* Tableaux à deux lignes d'en-tête : trait coupé sous chaque en-tête de groupe
+   (ex : All sectors / Strategic sectors), comme \cmidrule en PDF (cmidrule.lua).
+   Seulement si l'en-tête a deux lignes : les autres tableaux gardent leur trait plein. */
+thead:has(tr:nth-child(2)) tr:first-child th:not([rowspan]) {
+  border-bottom: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: calc(100% - 0.8em) 1px;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+</style>
+```
+
+# Introduction
+Blabla
+<!-- Text -->
+
+```{r}
+#| label: fig-highlyconc
+#| fig-cap: !expr 'paste0("Highly concentrated HS6 products in trade between the EU and China, Japan and the United States (", highlyconc_year("data/highlyconc.csv"), ")")'
+#| echo: false
+#| fig-width: 9
+#| fig-height: 3
+# Barres en miroir : le code est dans R/ (fonctions highlyconc, highlyconc_year).
+# Les données (data/highlyconc.csv) sont écrites par 21_dt_introduction.do.
+source("R/highlyconc.R", encoding = "UTF-8")
+highlyconc("data/highlyconc.csv")
+```
+
+::: {.note}
+*Source:* BACI, CEPII; authors' calculations. *Note:* In each panel, bars on the left count the products for which the partner accounts for more than 50% of EU imports (exports); bars on the right, the products for which the EU accounts for more than 50% of the partner's imports (exports). Intra-EU trade excluded. Each panel has its own scale.
+:::
+
+
+# Literature
+
+A growing literature proposes methods to identify country-specific import dependencies [@bonneau2020vulnerabilite; @eucommission2021strategic; @jaravel2021intrants; @jaravel2021strategie; @baur2022german; @Arjona2023Enhanced; @vicard2023eu; @arriola2024demystifying; @chimits2024asymmetry; @mejean2024identifying; @bonnet2026openness]. @tbl-comparison summarises the criteria, thresholds and coverage of the main ones.
+
+All these studies start from the concentration of imports across suppliers, which reflects how diversified the current sources of supply are. Most of them then account for the substitutability of foreign supply, in two ways. The first is domestic production: dependence is stronger when domestic output cannot cover demand. The second is the concentration of world supply: dependence is stronger when few countries produce the good, which leaves little room to switch suppliers. When the focus is on the EU, a frequent additional criterion is the share of extra-EU imports in total imports, which accounts for the supplies that can be met within the single market.
+
+More recent work also accounts for the persistence of dependencies. @vicard2023eu show substantial churning in dependent products from one year to the next, and the European Commission now includes this time dimension in its methodology [@Arjona2023Enhanced]. To avoid capturing short-term supply blips, @mejean2024identifying pool trade data over five consecutive years.
+
+More recently, @bonnet2026foreign extend the methodology of @eucommission2021strategic by integrating production data, calibrating the import concentration and exposure thresholds through a cluster analysis, and adding geopolitical risk indicators such as political distance and exposure to trade restrictions. With 2023 data, they identify 835 foreign-dependent EU products, against 390 in @eucommission2021strategic. Of these, 378 belong to strategic ecosystems and 206 are critical dependencies with geopolitically exposed suppliers.
+
+Beyond these baseline criteria, several refinements capture other dimensions of vulnerability. @jaravel2021intrants and @jaravel2021strategie go below the country level. Using French customs data, they identify products for which a single importing firm accounts for the bulk of national imports, a situation that combines geographic and firm-level concentration. @baur2022german apply the concentration logic to German imports from China and weight the dependencies by indicators of the main supplier's economic policy uncertainty, geopolitical risk and climate risk. @Panon2026Inputs move to the firm level and quantify the short-run impact of potential supply disruptions from China-aligned countries. They find large and heterogeneous effects across firms, sectors and regions.
+
+Export dependencies have received less attention, although a growing body of work argues that they are an equally important source of vulnerability, since access to foreign demand can also be weaponised [@pisaniferry2024; @veselinovic2026]. @arriola2024demystifying apply joint criteria to HS6 trade data. A bilateral export flow is a dependency only if the HHI of the country's exports across partners is at least 0.2 and the partner accounts for at least 10% of the country's exports of the product. @veselinovic2026 take a more descriptive approach, with export shares of GDP at the national level and destination market shares at the sectoral level. @costa2025detecting work at the firm level. They define an Italian firm as vulnerable to foreign demand when its exports are concentrated by destination and by product and account for an above-average share of its turnover.
+
+Most of these studies, however, focus on a single country or region, such as the EU, Germany, France or China, and often rely on firm-level or production data, or on criteria that are not available for all countries. Building on @lefebvre2024import, we use a method based only on product-level trade data, which can be applied uniformly to all countries.
+
+This paper contributes to this literature in three ways. First, we apply the same four criteria to imports and exports, so that import and export dependencies are identified with a comparable procedure. Second, we use a single method for all {{< var n_countries >}} countries, with a definition of strategic sectors built from international lists. Third, we make the product-level indicators available as an open database, so that users can apply the classifications directly.
+
+<!-- TODO : vérifier et compléter les cases "TBC" (sources : articles cités). -->
+
+| | Concentration criteria | Thresholds | Persistence | Imports / exports | Countries |
+|:--|:--|:--|:--|:--|:--|
+| @eucommission2021strategic | Import concentration, extra-EU import share, substitutability | HHI 0.4 | No | Imports | EU |
+| OECD (2025) | TBC | TBC | TBC | TBC | TBC |
+| @mejean2024identifying | TBC | HHI 0.4 | 5-year pooled data | Imports | TBC |
+| @bonnet2026foreign | Extra-EU import concentration, exposure (imports over imports plus production) | HHI 0.4, exposure 0.4 (checked by cluster analysis) | No (structural dependencies over 2017-2023) | Imports | EU |
+| @arriola2024demystifying | TBC | Export HHI 0.2, partner share 10% | TBC | Imports and exports | TBC |
+| **GeoDep** | Import concentration, world export concentration, substitutability | HHI 0.4, 0.4; ratio 1 | 2 years out of 3 | Imports and exports | {{< var n_countries >}} |
+
+: Methods used to identify trade dependencies: criteria, thresholds and coverage {#tbl-comparison}
+
+::: {.note}
+*Source:* authors' compilation from the studies cited. *Note:* HHI: Herfindahl-Hirschman index. Persistence: whether a product must be concentrated over several years to count as a dependency.
+:::
+
+# Methodology
+
+<!-- Text -->
+
+## Import dependencies
+
+A product is import-dependent for a country if it satisfies four cumulative criteria [@lefebvre2024import]. Let $M_{odpt}$ denote the value of imports of product $p$ by destination $d$ from origin $o$ in year $t$ (flows with $o = d$, such as intra-EU trade, are excluded). The total imports of $d$ are $M_{dpt} = \sum_o M_{odpt}$, the exports of country $o$ to the world are $X_{opt} = \sum_d M_{odpt}$, and world exports are $X_{pt} = \sum_o X_{opt}$. In the same way, the exports of country $d$ to the world are $X_{dpt} = \sum_{d'} M_{dd'pt}$.
+
+- **C1, import concentration.** The Herfindahl-Hirschman index (HHI) of the country's imports of the product across origins exceeds 0.4. With three suppliers, this implies that one of them accounts for at least half of the imports.
+$$
+\text{HHI}^M_{dpt} = \sum_o \left( \frac{M_{odpt}}{M_{dpt}} \right)^2 > 0.4
+$$
+- **C2, world export concentration.** The HHI of world exports of the product across exporters exceeds 0.4: alternative suppliers are scarce.
+$$
+\text{HHI}^X_{pt} = \sum_o \left( \frac{X_{opt}}{X_{pt}} \right)^2 > 0.4
+$$
+- **C3, non-substitutability.** The ratio of imports to exports of the product by the country exceeds 1: domestic production, proxied by exports, could not replace imports.
+$$
+\frac{M_{dpt}}{X_{dpt}} > 1
+$$
+- **C4, persistence.** C1 to C3 are met in {{< var year >}} and in at least one of the two previous years. This removes temporary fluctuations; @vicard2023eu show substantial churning in dependencies from one year to the next. With $D^M_{dpt} = 1$ when C1 to C3 hold in year $t$ (0 otherwise), product $p$ is import-dependent for $d$ in year $t$ if
+$$
+D^M_{dpt} = 1 \quad \text{and} \quad D^M_{dp,t-1} + D^M_{dp,t-2} \geq 1
+$$
+
+<!-- @tbl-stratsectors -->
+```{r}
+#| label: venn-setup
+#| include: false
+# Diagrammes de Venn des critères (fonctions venn, venn_total, venn_year, show_venn).
+# Les données (data/venn_M.csv) sont écrites par 23_dt_import_dependencies.do.
+source("R/venn_criteria.R", encoding = "UTF-8")
+
+# Chiffres du texte, tous les pays (data/venn_M_all.csv, écrit par 23)
+vm <- "data/venn_M_all.csv"
+n_m   <- function(code, crit = NULL) venn_n(vm, "iso_d", code, crit)
+pct_m <- function(code, crit, of = NULL) venn_pct(vm, "iso_d", code, crit, of)
+med_m <- function(crit, of = NULL) venn_median(vm, "iso_d", crit, of)
+c123  <- c("C1", "C2", "C3")
+
+# Même chose pour les exportations (data/venn_X_all.csv, écrit par 24)
+vx <- "data/venn_X_all.csv"
+n_x   <- function(code, crit = NULL) venn_n(vx, "iso_o", code, crit)
+pct_x <- function(code, crit, of = NULL) venn_pct(vx, "iso_o", code, crit, of)
+med_x <- function(crit, of = NULL) venn_median(vx, "iso_o", crit, of)
+```
+
+```{=html}
+<style>
+/* Les chiffres ne bloquent pas le survol des zones */
+.girafe_container_std svg text { pointer-events: none; }
+</style>
+```
+
+@fig-venn-m shows how the four criteria translate into numbers of products for the four main economies. In `r venn_year(vm)`, each of them imports between `r n_m("CHN")` (China) and `r n_m("EUN")` (EU) HS6 products, and between `r n_m("CHN", "C4")` (China) and `r n_m("JPN", "C4")` (Japan) of these products end up as import dependencies. For comparison, we also report the median share across the `r venn_n_other(vm, "iso_d")` other importers.
+
+Import concentration (C1) retains `r n_m("EUN", "C1")` products for the EU, that is `r pct_m("EUN", "C1")`% of its imported products. This is fewer than for the United States (`r n_m("USA", "C1")`), China (`r n_m("CHN", "C1")`) and Japan (`r n_m("JPN", "C1")`). The four main economies buy from more diversified sources than other countries, for which the median share of imported products meeting C1 reaches `r med_m("C1")`%.
+
+By construction, world export concentration (C2) defines the same list of products for every importer. The counts only differ because a country does not import all of them, and range from `r n_m("CHN", "C2")` (China) to `r n_m("EUN", "C2")` (EU). The two concentration criteria overlap in one direction only. Most products concentrated at the world level are also concentrated in each economy's imports, from `r pct_m("CHN", c("C1", "C2"), "C2")`% in China to `r pct_m("JPN", c("C1", "C2"), "C2")`% in Japan. But only `r pct_m("CHN", c("C1", "C2"), "C1")`% (China) to `r pct_m("EUN", c("C1", "C2"), "C1")`% (EU) of the products with concentrated imports are concentrated at the world level, and `r med_m(c("C1", "C2"), "C1")`% for the median of other countries. Concentrated imports therefore often reflect the importer's own sourcing rather than a global supply bottleneck.
+
+Non-substitutability (C3) is where the four economies differ most. The United States is a net importer of `r n_m("USA", "C3")` products (`r pct_m("USA", "C3")`% of its imported products), Japan of `r n_m("JPN", "C3")` (`r pct_m("JPN", "C3")`%) and the EU of `r n_m("EUN", "C3")` (`r pct_m("EUN", "C3")`%), against only `r n_m("CHN", "C3")` for China (`r pct_m("CHN", "C3")`%). The median share is `r med_m("C3")`% for other countries. This is what sets China apart. Among products meeting both C1 and C2, only `r pct_m("CHN", c123, c("C1", "C2"))`% also meet C3 in China, against `r pct_m("EUN", c123, c("C1", "C2"))`% to `r pct_m("JPN", c123, c("C1", "C2"))`% in the three other economies. Despite its many concentrated imports, China ends up with the fewest products meeting C1 to C3 (`r n_m("CHN", c123)`).
+
+Finally, persistence (C4) removes only a small share of these products. Between `r pct_m("CHN", "C4", c123)`% (China) and `r pct_m("JPN", "C4", c123)`% (Japan) of the products meeting C1 to C3 in `r venn_year(vm)` already met them in `r venn_year(vm) - 2` or `r venn_year(vm) - 1`. For the EU, this is the case for `r n_m("EUN", "C4")` of its `r n_m("EUN", c123)` products (`r pct_m("EUN", "C4", c123)`%). The median share is `r med_m("C4", c123)`% for other countries.
+
+```{r}
+#| label: fig-venn-m
+#| fig-cap: !expr 'paste0("Imported HS6 products meeting each import criterion, four main economies (", venn_year("data/venn_M.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 8.4
+show_venn(venn("data/venn_M.csv", id = "iso_d",
+     labels = c("C1: import concentration", "C2: world export concentration",
+                "C3: non-substitutability")))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* Centre: products meeting C1, C2 and C3; dark circle: products that also meet C4 (dependent). Circle areas are proportional to the square root of the number of products. `r if (knitr::is_html_output()) "Hover over the diagram for the other combinations. "`Number of imported products: `r venn_total("data/venn_M.csv", "iso_d")`.
+:::
+
+## Export dependencies
+
+Export dependencies are defined symmetrically: the dependent country is now the origin $o$, which relies on a few foreign markets that could hardly be replaced. In addition to the notation above, world imports are $M_{pt} = \sum_d M_{dpt}$ and, in the same way, the imports of country $o$ from the world are $M_{opt} = \sum_{o'} M_{o'opt}$. A product is export-dependent for a country if it satisfies four cumulative criteria:
+
+- **C1, export concentration.** The HHI of the country's exports of the product across destinations exceeds 0.4: the country sells to few markets.
+$$
+\text{HHI}^X_{opt} = \sum_d \left( \frac{M_{odpt}}{X_{opt}} \right)^2 > 0.4
+$$
+- **C2, world import concentration.** The HHI of world imports of the product across importers exceeds 0.4: alternative markets are scarce.
+$$
+\text{HHI}^M_{pt} = \sum_d \left( \frac{M_{dpt}}{M_{pt}} \right)^2 > 0.4
+$$
+- **C3, non-substitutability.** The ratio of exports to imports of the product by the country exceeds 1: the domestic market, proxied by imports, could not absorb the exports.
+$$
+\frac{X_{opt}}{M_{opt}} > 1
+$$
+- **C4, persistence.** C1 to C3 are met in {{< var year >}} and in at least one of the two previous years. With $D^X_{opt} = 1$ when C1 to C3 hold in year $t$ (0 otherwise), product $p$ is export-dependent for $o$ in year $t$ if
+$$
+D^X_{opt} = 1 \quad \text{and} \quad D^X_{op,t-1} + D^X_{op,t-2} \geq 1
+$$
+
+@fig-venn-x applies the same steps to exports. The four main economies export a similar number of HS6 products, between `r n_x("JPN")` (Japan) and `r n_x("USA")` (United States), but export dependencies are much rarer than import dependencies. Japan has `r n_x("JPN", "C4")` export dependencies, the EU `r n_x("EUN", "C4")`, China `r n_x("CHN", "C4")` and the United States `r n_x("USA", "C4")`, against `r n_m("CHN", "C4")` to `r n_m("JPN", "C4")` import dependencies.
+
+Export concentration (C1) is less common than import concentration. It concerns `r n_x("EUN", "C1")` products for the EU (`r pct_x("EUN", "C1")`% of its exported products) and `r n_x("CHN", "C1")` for China (`r pct_x("CHN", "C1")`%), but more for the United States (`r n_x("USA", "C1")`, `r pct_x("USA", "C1")`%) and Japan (`r n_x("JPN", "C1")`, `r pct_x("JPN", "C1")`%). As for imports, other countries are far more concentrated, with a median share of `r med_x("C1")`% of their exported products.
+
+World import concentration (C2) is the most selective criterion. Only `r n_x("JPN", "C2")` (Japan) to `r n_x("USA", "C2")` (United States) exported products have few buyers at the world level, against `r n_m("CHN", "C2")` to `r n_m("EUN", "C2")` imported products with few sellers. World demand is thus much less concentrated than world supply. The overlap between C1 and C2 again runs in one direction. Between `r pct_x("EUN", c("C1", "C2"), "C2")`% (EU) and `r pct_x("JPN", c("C1", "C2"), "C2")`% (Japan) of the C2 products are also concentrated in each economy's exports, but only `r pct_x("JPN", c("C1", "C2"), "C1")`% (Japan) to `r pct_x("EUN", c("C1", "C2"), "C1")`% (EU) of the products with concentrated exports have few buyers at the world level.
+
+Non-substitutability (C3), based on the trade balance, is by construction the mirror of the import criterion. China is a net exporter of `r n_x("CHN", "C3")` products (`r pct_x("CHN", "C3")`% of its exported products) and the EU of `r n_x("EUN", "C3")` (`r pct_x("EUN", "C3")`%), against `r n_x("JPN", "C3")` for Japan (`r pct_x("JPN", "C3")`%) and `r n_x("USA", "C3")` for the United States (`r pct_x("USA", "C3")`%). The median share is only `r med_x("C3")`% for other countries. In the end, between `r n_x("JPN", c123)` (Japan) and `r n_x("CHN", c123)` (China) products meet C1 to C3.
+
+Persistence (C4) is much more selective for exports than for imports. Only `r pct_x("JPN", "C4", c123)`% (Japan) to `r pct_x("USA", "C4", c123)`% (United States) of the products meeting C1 to C3 in `r venn_year(vx)` already met them in `r venn_year(vx) - 2` or `r venn_year(vx) - 1`, against `r pct_m("CHN", "C4", c123)`% to `r pct_m("JPN", "C4", c123)`% for imports. For the EU, this is the case for `r n_x("EUN", "C4")` of its `r n_x("EUN", c123)` products (`r pct_x("EUN", "C4", c123)`%), and the median share is `r med_x("C4", c123)`% for other countries. Export dependencies are thus more volatile.
+
+```{r}
+#| label: fig-venn-x
+#| fig-cap: !expr 'paste0("Exported HS6 products meeting each export criterion, four main economies (", venn_year("data/venn_X.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 8.4
+# Données : data/venn_X.csv, écrit par 24_dt_export_dependencies.do
+show_venn(venn("data/venn_X.csv", id = "iso_o",
+     labels = c("C1: export concentration", "C2: world import concentration",
+                "C3: non-substitutability")))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* Centre: products meeting C1, C2 and C3; dark circle: products that also meet C4 (dependent). Circle areas are proportional to the square root of the number of products. `r if (knitr::is_html_output()) "Hover over the diagram for the other combinations. "`Number of exported products: `r venn_total("data/venn_X.csv", "iso_o")`.
+:::
+
+## Strategic sectors
+
+There is no common definition of strategic sectors, sometimes also called critical sectors. Existing studies define them either from product characteristics or from policy lists. @balteanu2026eggs and @Panon2026Inputs mainly rely on the former. They combine advanced technology products (following the US Census Bureau), goods that are crucial to the green transition and, in the first case, semiconductors. @Panon2026Inputs also add the products that the European Commission identifies as foreign dependencies and, among raw materials, keep only those with highly concentrated extra-EU supply. @garcia2025external instead align their definition with EU legislation and build an External Vulnerability Index for three supply chains covered by major policy initiatives: raw materials, semiconductors and net-zero technologies. The European Commission takes a qualitative approach based on "sensitive ecosystems" [@eucommission2021strategic; @bonnet2026foreign]. A dependency is strategic when it affects the security and safety of European citizens, public health, or access to the inputs needed for the green and digital transitions. This approach selects aerospace and defence, energy-intensive industries, renewable energy, health and digital. Overall, these studies converge on a small set of areas: advanced technologies, semiconductors, green transition technologies and critical raw materials.
+
+We adopt a broad definition. Historically, strategic sectors were confined to defence, or dual-use goods, and to agrifood. We start from these two sectors, add agrifood inputs (fertilisers) and complete them with energy, health and critical raw materials (CRM). We do not consider the inputs of the green and digital transitions as such, but most of them already belong to one of these categories, in particular dual-use goods, energy or CRM.
+
+To build an agnostic definition, we rely on existing lists for each sector (@tbl-stratsectors). Two criteria guide the choice of these lists. The first is institutional representativeness: we give priority to lists produced or validated by international organisations, government agencies or research institutions. The second is data quality: we only keep lists with an explicit HS nomenclature at the 6-digit level. All lists are converted to the HS 2022 revision.
+
+- **Dual-use goods.** We use the EU list of dual-use items (Annex I to Regulation (EU) 2021/821), that is goods, software and technology that have both civilian and military applications or may contribute to the proliferation of weapons of mass destruction. This list is directly based on the multilateral export control regimes (Wassenaar Arrangement, Nuclear Suppliers Group, Missile Technology Control Regime, Australia Group and Chemical Weapons Convention), which are the *de facto* international benchmark for such goods. It thus covers the defence perimeter without a dedicated list. It is updated every year by a Commission delegated regulation.
+- **Agrifood.** We rely on the database of @espitia2020database, built to document import dependence, market concentration and export restrictions during the Covid-19 pandemic. It covers food and food-related products, as well as key medical supplies drawn from the WHO COVID-19 Disease Commodity Package. Since our health list is more extensive, we only keep the agrifood products. They were selected because their disruption was judged critical to food security, not because of their economic importance. We add the FAOSTAT list of fertilizers by product, which covers inorganic fertilizers such as nitrogenous, phosphate and potash fertilizers. This list synthesises almost all existing national definitions rather than a strictly domestic one.
+- **Critical raw materials.** We use the UNCTAD list of critical minerals (UNCTAD SDG Pulse 2025), which maps 60 critical minerals to HS6 products, from raw to semi-processed minerals and metals. Since it aggregates several national lists (EU, United States, Australia, Canada and Japan, among others), it is the most comprehensive synthesis available and the least dependent on a single national perspective.
+- **Health.** We use the classification of @CEPII:2024-02 rather than lists based only on the pharmaceutical chapters of the HS, or ad hoc lists set up by some national administrations during the Covid-19 crisis. This classification was designed to address the fragmentation of health products across industries in standard trade nomenclatures, which makes their weight in world trade hard to measure. It covers medicinal products and their compounds, medical technology equipment and small medical materials. Since it is built from the actual uses of these products by health systems, it provides an internationally consistent definition.
+- **Energy.** We use the list of the Energy Charter Treaty (ECT), retained for its broad coverage. Its Annexes EM I and EM II ("Energy Materials and Products") run from coal, crude oil, gas and petroleum products to electrical energy, fuelwood and nuclear materials. Its Annexes EQ I and EQ II cover energy-related equipment. The list thus covers the whole energy value chain, from exploration to end use.
+
+{{< include tables/Table_lists_strategic.md >}}
+
+Taken together, these lists define our strategic sectors. They are not mutually exclusive, and some products belong to several of them (@fig-strategic-euler). Strategic sectors cover {{< var strat_n >}} HS6 products, that is {{< var strat_prod_share >}}% of the {{< var n_products >}} products of the nomenclature, but {{< var strat_share >}}% of the value of world trade in {{< var year >}} (intra-EU trade excluded). The lists are thus broad in value, without covering all trade.
+
+We only use strategic sectors for import dependencies. On the import side, the risk is a supply disruption, and for a strategic product its cost goes well beyond the product itself because it spreads to the rest of the economy. Without semiconductors, for instance, the complex machines that use them as inputs cannot be produced. On the export side, the risk is to lose the revenue earned on a market, which can threaten jobs or the survival of a whole industry, as Chinese duties on French cognac illustrate. This risk does not depend on whether the product is strategic.
+
+```{r}
+#| label: fig-strategic-euler
+#| fig-cap: "Overlaps between strategic lists: HS6 products in common (HS 2022)"
+#| echo: false
+#| fig-width: 7
+#| fig-height: 5.5
+# Diagramme d'Euler : le code est dans R/ (fonctions euler_plot, show_euler, euler_missing).
+# Les données (data/strategic_overlap.csv) sont écrites par 22_dt_lists_variables.do.
+source("R/strategic_euler.R", encoding = "UTF-8")
+show_euler(euler_plot("data/strategic_overlap.csv"))
+```
+
+::: {.note}
+*Sources:* lists in @tbl-stratsectors; authors' calculations. *Note:* Areas are proportional to the number of products; numbers give the products in each zone only (list totals in @tbl-stratsectors). Agrifood includes the FAO fertiliser list. `r if (knitr::is_html_output()) "Hover over the diagram for the smaller zones. " else paste0("Zones with fewer than ", euler_min, " products are not labelled. ")``r euler_missing("data/strategic_overlap.csv")`
+:::
+
+# GeoDep database
+
+This section describes the coverage of GeoDep, its variables, and the import and export dependencies it identifies for the four main economies.
+
+## Coverage
+
+We use trade data from the BACI database [@CEPII:2010-23] in the HS 2022 revision (version {{< var baci_version >}}). The {{< var year >}} edition of GeoDep covers {{< var n_countries >}} countries, as importers or exporters, and {{< var n_products >}} HS6 products.[^window] The EU is treated as a single economy (EU27, with the same composition over time): intra-EU flows are excluded and EU member states do not appear separately.
+
+[^window]: Criterion C4 requires three consecutive years of data. Since BACI starts in {{< var year_min >}} in the HS 2022 revision, dependencies can only be identified for {{< var year >}}. An older revision would cover more years, but recent flows would then have to be converted to a less detailed nomenclature. The HS 2022 revision is also closer to the products traded today, as it introduces new codes for recent goods and technologies.
+
+We exclude a small number of products. First, we remove natural gas (HS6 271111 and 271121) and non-crude petroleum oils (HS6 271000). These energy goods do not always go through customs and, given their strategic nature, their trade flows may be misreported.[^energy] Second, we remove all products of HS chapter 93 (arms and ammunition). Trade in military goods benefits from confidentiality exemptions, so that trade-based concentration indicators are poorly suited to measure dependencies in this sector.
+
+[^energy]: See the CEPII blog post: <https://www.cepii.fr/blog/en/post.asp?IDcommunique=929>.
+
+## Variables
+
+GeoDep contains two datasets for {{< var year >}}, with one row per country × HS6 product. Values are in thousands of current US dollars. GeoDep_M (@tbl-geodep-m) describes import dependencies and the strategic sector of each product; GeoDep_X (@tbl-geodep-x) describes export dependencies. Variables `c1_M`, `c2_M` and `c3_M` report $\text{HHI}^M_{dpt}$, $\text{HHI}^X_{pt}$ and $M_{dpt}/X_{dpt}$; `c1_X`, `c2_X` and `c3_X` report $\text{HHI}^X_{opt}$, $\text{HHI}^M_{pt}$ and $X_{opt}/M_{opt}$. When the denominator of C3 is zero, `c3_M` and `c3_X` are set to 9999.
+
+{{< include tables/variables_table_M.md >}}
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* One row per importing country × HS6 product ({{< var year >}}). Values in thousands of current US dollars.
+:::
+
+{{< include tables/variables_table_X.md >}}
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* One row per exporting country × HS6 product ({{< var year >}}). Values in thousands of current US dollars. No strategic sector variables: they apply to imports only.
+:::
+
+<!-- Text -->
+
+## Trade dependencies
+
+### Import dependencies
+
+<!-- Text -->
+
+<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
+- L'UE est bien plus dépendante de la Chine que l'importateur médian : la Chine
+  est le premier fournisseur de 63 % de ses produits dépendants, contre 48 %
+  pour l'importateur médian (@fig-first-origin).
+  Chiffres : m_first_chn_eun (63), m_first_chn_median (48).
+- Citer les MOYENNES entre importateurs, qui s'additionnent (contrairement aux
+  médianes de la figure) : en moyenne, la Chine est le premier fournisseur de
+  41 % des produits dépendants d'un pays, l'UE de 21 %, les États-Unis de 8 %,
+  toutes les autres origines de 30 %.
+  Chiffres : m_first_chn_mean, m_first_eun_mean, m_first_usa_mean, m_first_oth_mean.
+-->
+
+
+{{< include tables/Table1_M_hs22.md >}}
+
+```{r}
+#| label: fig-first-origin
+#| fig-cap: !expr 'paste0("Main supplier of import-dependent products: share of each importer\x27s dependent products supplied first by China, the EU, the United States or another origin (", first_origin_year("data/first_origin_M.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.6
+# Premier fournisseur : le code est dans R/ (fonctions first_origin, show_first_origin, first_origin_n, first_origin_year).
+# Les données (data/first_origin_M.csv) sont écrites par 23_dt_import_dependencies.do.
+source("R/first_origin.R", encoding = "UTF-8")
+show_first_origin(first_origin("data/first_origin_M.csv"))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* `r first_origin_n("data/first_origin_M.csv")` importers, all products. For each origin, share of each importer's dependent products for which this origin is the main supplier (0% if it supplies none). The three origins supplying the most dependent products worldwide are shown; all other origins are grouped. For each importer (symbols), the four shares sum to 100%; the medians, computed separately for each origin, do not.
+:::
+
+<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
+- Dual use n'est PAS le secteur le plus dépendant en part (@fig-sector-dep) :
+  beaucoup de produits dépendants en nombre (UE 51) car la liste est la plus
+  longue (~925 produits importés), mais seulement ~5 % sont dépendants. Health
+  (UE 10,8 %, JPN 12,9 %) et Agrifood (JPN 14,6 %) sont les plus dépendants.
+- La Chine est peu dépendante dans tous les secteurs (≤ 4 %), sauf Agrifood (9,7 %).
+- Chiffres : m_[pays]_sect_[secteur]_n et _share, ex. m_eun_sect_dual_use_share,
+  m_jpn_sect_agrifood_share (pays : eun chn usa jpn ; secteurs : crm dual_use
+  health agrifood energy).
+-->
+
+```{r}
+#| label: fig-sector-dep
+#| fig-cap: !expr 'paste0("Import-dependent products by strategic sector, four main economies (", sector_dep_year("data/sector_dep_M.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.4
+# Produits dépendants par secteur : le code est dans R/ (fonctions sector_dep, show_sector_dep, sector_dep_year).
+# Les données (data/sector_dep_M.csv) sont écrites par 23_dt_import_dependencies.do.
+source("R/sector_dep.R", encoding = "UTF-8")
+show_sector_dep(sector_dep("data/sector_dep_M.csv"))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* Bars: number of dependent HS6 products. Labels: share of the products of the sector imported by the country that are dependent. A product listed in several sectors is counted in each. Sectors defined in @tbl-stratsectors.
+:::
+
+### Export dependencies
+
+<!-- Text -->
+
+<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
+- Les dépendances aux exportations sont bien plus dispersées entre clients que
+  les dépendances aux importations entre fournisseurs : pour l'exportateur
+  médian, près de la moitié des produits dépendants ont un premier client autre
+  que l'UE, la Chine et les États-Unis (@fig-first-destination).
+- Moyennes entre exportateurs (elles s'additionnent) : UE 23 %, Chine 19 %,
+  États-Unis 10 %, autres destinations 48 %.
+  Chiffres : x_first_oth_median (49), x_first_eun_mean, x_first_chn_mean,
+  x_first_usa_mean, x_first_oth_mean.
+-->
+
+
+{{< include tables/Table1_X_hs22.md >}}
+
+```{r}
+#| label: fig-first-destination
+#| fig-cap: !expr 'paste0("Main importer of export-dependent products: share of each exporter\x27s dependent products bought first by the EU, China, the United States or another destination (", first_origin_year("data/first_destination_X.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.6
+# Premier client : même code que la figure des importations (first_origin.R, flow = "X").
+# Les données (data/first_destination_X.csv) sont écrites par 24_dt_export_dependencies.do.
+show_first_origin(first_origin("data/first_destination_X.csv", flow = "X"))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* `r first_origin_n("data/first_destination_X.csv", "X")` exporters, all products. For each destination, share of each exporter's dependent products for which this destination is the main importer (0% if it buys none). The three destinations buying the most dependent products worldwide are shown; all other destinations are grouped. For each exporter (symbols), the four shares sum to 100%; the medians, computed separately for each destination, do not.
+:::
+
+## Sensitivity analysis {#sec-sensitivity}
+
+```{r}
+#| label: sensitivity-setup
+#| include: false
+# Code des deux figures et des chiffres du texte (R/hhi_topshare.R, R/sensitivity_curves.R).
+# Les données sont écrites par 25_dt_sensitivity.do.
+source("R/hhi_topshare.R", encoding = "UTF-8")
+source("R/sensitivity_curves.R", encoding = "UTF-8")
+hf <- "data/hhi_topshare.csv"
+sc <- "data/sensitivity_curves.csv"
+```
+
+The identification of dependencies rests on the choice of criteria and of their thresholds. The two concentration criteria use the same HHI threshold of {{< var thr_c1 >}} for imports (C1: concentration of the importer's suppliers, C2: concentration of world exports) and for exports (C1: concentration of the exporter's customers, C2: concentration of world imports). This threshold has a simple economic meaning. In the typical case, it marks the point where a single partner accounts for the majority of trade in a product: more than half of a country's imports come from its main supplier, more than half of its exports go to its main customer, and the main world exporter or importer holds more than half of the world market. The same value is also common in the literature [@eucommission2021strategic; @bonnet2026foreign], which makes our results comparable with previous studies. This section first shows this meaning in the data, then shows how the number of dependent products changes when each threshold moves.
+
+An HHI is not easy to interpret. @fig-hhi-topshare translates it into the share of the main partner, which is easier to read. For each level of the HHI, it shows the median share of the main partner (solid line) and its interquartile range (shaded area), for imports (upper panels) and exports (lower panels).
+For C1, the threshold means that the median importer buys `r hhi_at(hf, "M_C1")`% of a product from its main supplier. The export side is very similar: the median exporter sells `r hhi_at(hf, "X_C1")`% of a product to its main customer. A threshold of 0.3 would lower the median share of the main supplier to `r hhi_at(hf, "M_C1", 0.3)`%, below the majority, and a threshold of 0.5 would raise it to `r hhi_at(hf, "M_C1", 0.5)`%.
+
+For C2, the share of the main partner is higher at the same threshold. In the median case, the main exporter and the main importer of a product each hold `r hhi_at(hf, "M_C2")`% of the world market. Overall, the four panels are very similar. The relation between the HHI and the share of the main partner depends little on the type of flow, so the same threshold has the same meaning for the four criteria.
+
+```{r}
+#| label: fig-hhi-topshare
+#| fig-cap: !expr 'paste0("What an HHI threshold means: share of the main partner by level of concentration (", hhi_year("data/hhi_topshare.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+# Part du premier partenaire selon le HHI (fonctions hhi_topshare, show_hhi, hhi_at, hhi_year).
+show_hhi(hhi_topshare(hf))
+```
+
+::: {.note}
+*Source:* BACI, CEPII; authors' calculations. *Note:* Country × product pairs (products for C2) grouped in 0.05-wide HHI bins. Vertical line: threshold used in GeoDep ({{< var thr_c1 >}}). Intra-EU trade excluded.
+:::
+
+@fig-sensitivity shows how the number of dependent products changes when one threshold moves while the two others stay at their baseline values. Three results stand out.
+
+First, the curves are smooth. There is no jump around the baseline thresholds: the results do not hinge on a value at which many products would suddenly change status.
+
+Second, world concentration (C2) is the most influential criterion. Lowering the C2 threshold from 0.4 to 0.3 raises the number of EU import dependencies from `r sens_n(sc, "M", "C2", 0.4, "EUN")` to `r sens_n(sc, "M", "C2", 0.3, "EUN")` (`r sens_change(sc, "M", "C2", 0.3, "EUN")`%), while the same change for C1 adds only `r sens_change(sc, "M", "C1", 0.3, "EUN")`%. Non-substitutability (C3) matters much less: a ratio of 0.5 or 1.5 instead of 1 changes the number of EU dependencies by `r sens_change(sc, "M", "C3", 0.5, "EUN")`% and `r sens_change(sc, "M", "C3", 1.5, "EUN")`% respectively. This is consistent with @bonnet2026foreign, who find that concentration, rather than exposure, drives the selection of dependent products. On the export side, the numbers are much smaller, but C2 is again the most influential criterion: at 0.3 instead of 0.4, the number of EU export dependencies changes by `r sens_change(sc, "X", "C2", 0.3, "EUN")`%, against `r sens_change(sc, "X", "C1", 0.3, "EUN")`% for C1.
+
+Third, the ranking of the four economies hardly changes. For imports, Japan has the most dependencies and China the fewest, whatever the threshold. The EU and the United States remain close and swap places only for low concentration thresholds.
+
+```{r}
+#| label: fig-sensitivity
+#| fig-cap: !expr 'paste0("Number of dependent HS6 products when one threshold changes, four main economies (", sensitivity_year("data/sensitivity_curves.csv"), ")")'
+#| echo: false
+#| fig-width: 8
+#| fig-height: 5.2
+# Courbes de sensibilité (fonctions sensitivity_curves, show_sensitivity, sens_n, sens_change).
+show_sensitivity(sensitivity_curves(sc))
+```
+
+::: {.note}
+*Source:* GeoDep, CEPII. *Note:* All products. In each column, only one threshold changes; the other two stay at their baseline values (C1 > {{< var thr_c1 >}}, C2 > {{< var thr_c2 >}}, C3 > {{< var thr_c3 >}}). Dashed line: baseline threshold. Criterion C4 also applies: a product is counted as dependent if C1 to C3, with these thresholds, are met in {{< var year >}} and in at least one of the two previous years.
+:::
+
+# Concluding remarks
+
+<!-- Text -->
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\newpage
+
+::: {.content-visible when-format="pdf"}
+\appendix
+:::
+
+# Appendix {.unnumbered}
+
+# Additional figures {#sec-additional-figures .appendix}
+
+<!-- Figures -->

@@ -1,4 +1,7 @@
-# R / RStudio
+# macOS
+.DS_Store
+
+# R / RStudio (anywhere in the repo)
 .Rproj.user
 .Rhistory
 .RData
@@ -6,20 +9,5 @@
 .Renviron
 .RDataTmp
 
-# macOS
-.DS_Store
-
-# Deployment records (local to your machine)
-rsconnect/
-
-# Raw data copied from Dropbox by update_data.R (too large, can be rebuilt)
-1_Data/*.dta
-1_Data/*.csv
-1_Data/geodep_M_hs22.rds
-1_Data/geodep_X_hs22.rds
-# ...but keep the small code lists
-!1_Data/country_codes_V202601.csv
-!1_Data/product_codes_HS22_V202601.csv
-
-# Personal notes
-App.docx
+# Local Claude Code settings
+.claude/settings.local.json

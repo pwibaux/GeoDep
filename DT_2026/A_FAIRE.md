@@ -31,9 +31,8 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
 - Question ouverte : figure 8 en un seul panneau (4 médianes) au lieu de 4 ?
 - Migration Dropbox -> git faite et vérifiée (mêmes CSV, tableaux et chiffres
   qu'avant ; tri ajouté avant l'export de first_origin_M et first_destination_X).
-- Reste : déplacer à la main `Graph`, `Map`, `GeoDep_Clemence` dans `99_old`
-  (sur dropbox.com : fichiers en ligne uniquement), puis tester
-  `17_compare_with_app.do` (lit `99_old/GeoDep_Clemence`).
+- Dropbox rangée (Graph, Map, GeoDep_Clemence dans `99_old`) ;
+  `17_compare_with_app.do` testé depuis le nouvel emplacement : sans erreur.
 - Vérifier sur le poste de Pauline que son nom d'utilisateur est `wibaux` ou
   `paulinewibaux` (en-têtes des do-files, `R/copy_pdf.R`).
 

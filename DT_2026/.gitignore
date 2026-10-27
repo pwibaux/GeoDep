@@ -6,7 +6,7 @@
 *.tex
 *.log
 
-# Chemin local de la Dropbox (DEPENDENCE_DIR)
+# Variables d'environnement locales
 .Renviron
 
 /.quarto/

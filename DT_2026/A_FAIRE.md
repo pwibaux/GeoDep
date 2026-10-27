@@ -55,7 +55,7 @@ Dropbox : Dependence/
 ├ 01_GeoDep_database/      chaîne Stata (ex GeoDep_2024), BACI dans Data/raw/BACI_HS22
 ├ 02_working_paper/        PDF du document de travail (copiés par Quarto)
 ├ 03_other_output/         PolicyBrief, PB_tables, Lettre, Graphique_du_Cepii, Panorama…
-├ 04_JRC_BioTech/          projet à part
+├ JRC_BioTech/             projet à part (nom inchangé : chemins écrits dans ses do-files)
 ├ 05_literature/           Biblio, Press
 ├ 06_admin/                Demandes, Discussion, Stage, Pgm de travail 2024-2025
 └ 99_old/                  Data (ancien), Program, Table, Graph, Map, GeoDep_Clemence,
@@ -70,7 +70,7 @@ Comment les deux se parlent (un seul sens) :
 - Stata écrit dans le clone git : `data/*.csv`, `tables/*.md`, `_variables.yml`
   (chemin `$wp`, trouvé seul dans `Documents/GitHub/GeoDep/DT_2026`) ;
 - les autres sorties Stata (.tex, graphiques) restent dans `01_GeoDep_database/Output` ;
-- Quarto copie le PDF dans `Dependence/02_working_paper` (`R/copy_pdf.R`, `.Renviron`).
+- Quarto copie le PDF dans `Dependence/02_working_paper` (`R/copy_pdf.R`, chemin selon l'utilisateur).
 - À deux : `git pull` avant de lancer Stata, commit + push après.
 
 Reste à faire :

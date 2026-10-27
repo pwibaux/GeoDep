@@ -32,9 +32,6 @@ quarto render trade_dependencies_geodep.qmd
 
 Packages R : tidyverse, sf, ggiraph, eulerr. Les sorties (HTML, PDF, `*_files/`) ne sont pas
 versionnées. Après chaque compilation, `R/copy_pdf.R` copie le PDF dans
-`Dependence/02_working_paper` (Dropbox). Il faut pour cela un fichier `.Renviron` (non versionné)
-dans ce dossier, avec le chemin du dossier Dependence :
-
-```
-DEPENDENCE_DIR="C:/Users/.../Dropbox/.../Dependence"
-```
+`Dependence/02_working_paper` (Dropbox). Le chemin de la Dropbox est choisi selon le nom
+d'utilisateur, comme en tête des do-files : pour un nouvel utilisateur, ajouter une ligne dans
+`R/copy_pdf.R`.

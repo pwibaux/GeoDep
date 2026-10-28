@@ -1,4 +1,4 @@
-# DT 2026 : prochaines étapes (état au mardi 27/10/2026)
+# DT 2026 : prochaines étapes (état au mercredi 28/10/2026)
 
 Fichier dans le dépôt git GeoDep (`DT_2026/`), partagé avec la co-autrice.
 Papier : `trade_dependencies_geodep.qmd`. Code R des figures : `R/`.
@@ -56,10 +56,23 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
 - Cartes (juste avant les tableaux de 4.3) et décomposition sectorielle des
   importations : c'est elle ; la prévenir de la figure par secteur stratégique
   (`fig-sector-dep`, `R/sector_dep.R`) pour éviter les doublons.
-- Application de cartes : mettre à jour les données et republier ; les textes
-  de `geodep_shiny/app.R` (git) (l. 152-194) gardent les anciens libellés de
-  `import_dpt`, `share_M_odpt`, `export_opt`, `share_X_odpt`. La correction
-  Dual use change aussi `sect_dual_use` et deux chiffres d'interdépendances.
+- Application de cartes (`geodep_shiny/`) : c'est Pauline qui s'en occupe.
+  Vérifié le 28/10 :
+  - noms des variables : déjà à jour dans `preparation.R` et `app.R`
+    (`first_o`, `share_M_odpt`, `first_d`, `share_X_odpt`, `dependent_M/X`) ;
+  - chemins : `update_data.R` (l. 12) et `export_maps.R` (l. 10) pointent
+    encore vers `GeoDep_2024` ; proposé : `DROPBOX_DIR` = dossier `Dependence`
+    de chacun, et le code n'ajoute que `01_GeoDep_database/...` ;
+  - descriptions des variables du README téléchargeable (`app.R`, l. 387-429) :
+    différentes des labels de `15_geodep_final.do` (à aligner) ;
+  - relancer `update_data.R` + `preparation.R` (correction Dual use :
+    `sect_dual_use`), puis republier.
+- Mon `geodep_shiny/.Renviron` (local, hors git) suit déjà la convention
+  proposée : il ne marchera qu'après la correction des chemins par Pauline.
+  Le `.Renviron` ne passe pas par git : le créer aussi sur mon autre poste
+  (`lefebvre`), dans `geodep_shiny/.Renviron` :
+  `DROPBOX_DIR=C:/Users/lefebvre.LENOVOM90117/CIREM Dropbox/kévin LEFEBVRE/Dependence`
+  (et y cloner le dépôt dans `Documents/GitHub/GeoDep`, pour que Stata trouve `$wp`).
 - Réorganisation du dossier `Dependence` : faite (voir plus bas).
 
 ## Organisation des dossiers (faite le 27/10/2026)
@@ -88,8 +101,8 @@ Comment les deux se parlent (un seul sens) :
 - À deux : `git pull` avant de lancer Stata, commit + push après.
 
 Reste à faire :
-- `geodep_shiny` lit encore `GeoDep_2024/...` (Dropbox) : à corriger si l'appli
-  repart, sinon l'archiver (tag git puis suppression).
+- `geodep_shiny` lit encore `GeoDep_2024/...` (Dropbox) : corrections confiées
+  à Pauline (voir "Coordination avec Pauline").
 - Si le dépôt devient public : vérifier la licence BACI pour les données dérivées ;
   `renv` pour figer les packages R.
 

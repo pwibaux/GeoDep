@@ -29,8 +29,12 @@ Le mettre à jour quand une tâche est faite ou une décision prise.
 
 ## Outils (Windows)
 
-- Stata en batch : `"/c/Program Files/Stata18/StataSE-64.exe" //e do fichier.do`
-  (lancer depuis un dossier temporaire ; le log est écrit à côté).
+- Stata en batch : `"<stata>" //e do fichier.do`
+  (lancer depuis un dossier temporaire ; le log est écrit à côté). `<stata>` selon le poste :
+  - `lefebvre` : `/c/Program Files/Stata18/StataSE-64.exe` (Stata 18) ;
+  - `Kevin` : `/c/Users/Kevin/Desktop/Stata/Stata17/StataSE-64.exe` (Stata 17).
+  Entre les deux versions, un arrondi peut changer d'un dixième dans un CSV
+  (vu le 28/10/2026 dans `hhi_topshare.csv`) : ne pas commiter ce bruit.
 - Quarto : `"/c/Program Files/Quarto/bin/quarto.exe" render trade_dependencies_geodep.qmd`.
   Erreur « os error 32 » : fichier verrouillé par Dropbox ou un autre programme, relancer.
 - Dropbox : les fichiers « en ligne uniquement » ne se déplacent pas bien en ligne de commande

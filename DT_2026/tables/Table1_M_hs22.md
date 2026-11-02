@@ -1,7 +1,8 @@
 +--------------------+--------------+--------------------------------------------------------------------+
 | Country            | All sectors  | Strategic sectors                                                  |
 |                    +--------------+----------+---------------------+-----------------------------------+
-|                    | Number       | Number   | Import share (%)    | Top-3 origins                     |
+|                    | Number       | Number   | Share of strategic  | Top-3 origins                     |
+|                    |              |          | imports (value, %)  |                                   |
 +:===================+:============:+:========:+:===================:+:==================================+
 | European Union     | 468          | 155      | 7.2                 | China (73), United States (17),   |
 |                    |              |          |                     | India (12)                        |
@@ -19,5 +20,5 @@
 : Number of import-dependent products, four main economies (2024) {#tbl-dependent-m}
 
 ::: {.note}
-*Source:* GeoDep, CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022). Strategic sectors: products in at least one of the lists of @tbl-stratsectors. Import share: share of the country's imports of strategic products accounted for by its dependent products. Top-3 origins: main suppliers of the dependent strategic products (number of products in brackets).
+*Source:* GeoDep, CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022). Strategic sectors: products in at least one of the lists of @tbl-stratsectors. Share of strategic imports: share, in value, of the country's imports of strategic products accounted for by its dependent products. Top-3 origins: main suppliers of the dependent strategic products (number of products in brackets).
 :::

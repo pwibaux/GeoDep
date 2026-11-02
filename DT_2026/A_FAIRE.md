@@ -36,6 +36,20 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
 - Vérifier sur le poste de Pauline que son nom d'utilisateur est `wibaux` ou
   `paulinewibaux` (en-têtes des do-files, `R/copy_pdf.R`).
 
+## Journée du 29/10/2026 (en bref)
+
+- Propositions de réécriture (Tables 2, 5, 6, Figures 4 à 7, introduction) dans
+  `propositions_2026-10-29.md` (non commité). Reportés dans le qmd le 29/10 :
+  Figures 4 à 7, Table 6, paragraphe des résultats de l'introduction, S19
+  (Coverage), égalités du premier fournisseur (Variables). Restent : Tables 2
+  et 5 (Stata), sources des listes en `.bib`, table d'annexe.
+- Chiffres de ces paragraphes ajoutés dans 22 (recoupements des listes), 23
+  (sections 5b et 6d : sur-représentation de la Chine, C1/C2 par secteur) et
+  24 (Table 6). Lancés, vérifiés contre R, rien ne change dans `Data/final`.
+- Décisions : pas de parts sur les couples pays x produit mis en commun dans le
+  texte (médianes ou % d'importateurs) ; pas de phrase sur la « gravité » ;
+  tableaux par fournisseur hors du WP (graphique ou carte plus tard).
+
 ## À faire : rédaction
 
 1. Sections encore vides (`<!-- Text -->`) : Introduction (texte autour de la

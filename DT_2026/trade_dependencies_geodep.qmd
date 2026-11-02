@@ -64,6 +64,11 @@ thead:has(tr:nth-child(2)) tr:first-child th:not([rowspan]) {
 Blabla
 <!-- Text -->
 
+<!-- Résultats principaux : à placer après la présentation de la méthode, quand l'introduction
+sera rédigée. Nouveauté du premier point à vérifier chez Méjean et Rousseaux (2024) et
+Bonnet et al. (2026). -->
+Our results bring four main findings. First, China weighs more in dependencies than in trade overall. In {{< var m_chn_premium_pct >}}% of countries, China supplies a larger share of the products they depend on than of all the products they import. The EU, the United States and the other large exporters show the opposite pattern. This mostly reflects China's dominance of concentrated world markets, except for the EU, whose dependencies come from China even more often than world supply concentration would imply. Second, strategic products are not more often dependent than other products. Importers are as concentrated on a single supplier for these products, but world supply is less concentrated, especially for energy and dual-use goods. Third, export dependencies are much rarer than import dependencies, and their value is concentrated in a few products. Fourth, dual-use goods are central in strategic lists: {{< var strat_multi_du_pct >}}% of the products that belong to several lists are dual-use goods.
+
 ```{r}
 #| label: fig-highlyconc
 #| fig-cap: !expr 'paste0("Highly concentrated HS6 products in trade between the EU and China, Japan and the United States (", highlyconc_year("data/highlyconc.csv"), ")")'
@@ -170,15 +175,15 @@ med_x <- function(crit, of = NULL) venn_median(vx, "iso_o", crit, of)
 </style>
 ```
 
-@fig-venn-m shows how the four criteria translate into numbers of products for the four main economies. In `r venn_year(vm)`, each of them imports between `r n_m("CHN")` (China) and `r n_m("EUN")` (EU) HS6 products, and between `r n_m("CHN", "C4")` (China) and `r n_m("JPN", "C4")` (Japan) of these products end up as import dependencies. For comparison, we also report the median share across the `r venn_n_other(vm, "iso_d")` other importers.
+@fig-venn-m shows how the four criteria narrow down the products imported by the four main economies. Each of them imports between `r n_m("CHN")` and `r n_m("EUN")` HS6 products, but only `r n_m("CHN", "C4")` (China) to `r n_m("JPN", "C4")` (Japan) end up as import dependencies. The figure also reports the median share across the `r venn_n_other(vm, "iso_d")` other importers.
 
-Import concentration (C1) retains `r n_m("EUN", "C1")` products for the EU, that is `r pct_m("EUN", "C1")`% of its imported products. This is fewer than for the United States (`r n_m("USA", "C1")`), China (`r n_m("CHN", "C1")`) and Japan (`r n_m("JPN", "C1")`). The four main economies buy from more diversified sources than other countries, for which the median share of imported products meeting C1 reaches `r med_m("C1")`%.
+Import concentration (C1) is the least selective criterion. It retains `r pct_m("EUN", "C1")`% of the products imported by the EU, and up to `r pct_m("JPN", "C1")`% for Japan. The four main economies still buy from more diversified sources than other countries, for which the median share reaches `r med_m("C1")`%.
 
-By construction, world export concentration (C2) defines the same list of products for every importer. The counts only differ because a country does not import all of them, and range from `r n_m("CHN", "C2")` (China) to `r n_m("EUN", "C2")` (EU). The two concentration criteria overlap in one direction only. Most products concentrated at the world level are also concentrated in each economy's imports, from `r pct_m("CHN", c("C1", "C2"), "C2")`% in China to `r pct_m("JPN", c("C1", "C2"), "C2")`% in Japan. But only `r pct_m("CHN", c("C1", "C2"), "C1")`% (China) to `r pct_m("EUN", c("C1", "C2"), "C1")`% (EU) of the products with concentrated imports are concentrated at the world level, and `r med_m(c("C1", "C2"), "C1")`% for the median of other countries. Concentrated imports therefore often reflect the importer's own sourcing rather than a global supply bottleneck.
+World export concentration (C2) is far more selective. It defines the same list of products for every importer, and retains between `r n_m("CHN", "C2")` and `r n_m("EUN", "C2")` products. Most of these products are also concentrated in each economy's imports, but the reverse is not true: for the EU, only `r pct_m("EUN", c("C1", "C2"), "C1")`% of the products with concentrated imports have concentrated world supply. Concentrated imports therefore often reflect the importer's own sourcing rather than a global supply bottleneck.
 
-Non-substitutability (C3) is where the four economies differ most. The United States is a net importer of `r n_m("USA", "C3")` products (`r pct_m("USA", "C3")`% of its imported products), Japan of `r n_m("JPN", "C3")` (`r pct_m("JPN", "C3")`%) and the EU of `r n_m("EUN", "C3")` (`r pct_m("EUN", "C3")`%), against only `r n_m("CHN", "C3")` for China (`r pct_m("CHN", "C3")`%). The median share is `r med_m("C3")`% for other countries. This is what sets China apart. Among products meeting both C1 and C2, only `r pct_m("CHN", c123, c("C1", "C2"))`% also meet C3 in China, against `r pct_m("EUN", c123, c("C1", "C2"))`% to `r pct_m("JPN", c123, c("C1", "C2"))`% in the three other economies. Despite its many concentrated imports, China ends up with the fewest products meeting C1 to C3 (`r n_m("CHN", c123)`).
+Non-substitutability (C3) is what sets China apart. Among the products meeting both C1 and C2, China is a net importer of only `r pct_m("CHN", c123, c("C1", "C2"))`%, against `r pct_m("EUN", c123, c("C1", "C2"))`% to `r pct_m("JPN", c123, c("C1", "C2"))`% for the three other economies. Despite its many concentrated imports, it thus ends up with the fewest products meeting C1 to C3.
 
-Finally, persistence (C4) removes only a small share of these products. Between `r pct_m("CHN", "C4", c123)`% (China) and `r pct_m("JPN", "C4", c123)`% (Japan) of the products meeting C1 to C3 in `r venn_year(vm)` already met them in `r venn_year(vm) - 2` or `r venn_year(vm) - 1`. For the EU, this is the case for `r n_m("EUN", "C4")` of its `r n_m("EUN", c123)` products (`r pct_m("EUN", "C4", c123)`%). The median share is `r med_m("C4", c123)`% for other countries.
+Finally, persistence (C4) removes only a small share of these products. From `r pct_m("CHN", "C4", c123)`% (China) to `r pct_m("JPN", "C4", c123)`% (Japan) of them already met C1 to C3 in `r venn_year(vm) - 2` or `r venn_year(vm) - 1`.
 
 ```{r}
 #| label: fig-venn-m
@@ -216,15 +221,15 @@ $$
 D^X_{opt} = 1 \quad \text{and} \quad D^X_{op,t-1} + D^X_{op,t-2} \geq 1
 $$
 
-@fig-venn-x applies the same steps to exports. The four main economies export a similar number of HS6 products, between `r n_x("JPN")` (Japan) and `r n_x("USA")` (United States), but export dependencies are much rarer than import dependencies. Japan has `r n_x("JPN", "C4")` export dependencies, the EU `r n_x("EUN", "C4")`, China `r n_x("CHN", "C4")` and the United States `r n_x("USA", "C4")`, against `r n_m("CHN", "C4")` to `r n_m("JPN", "C4")` import dependencies.
+@fig-venn-x applies the same steps to exports. Export dependencies are much rarer than import dependencies: from `r n_x("JPN", "C4")` (Japan) to `r n_x("USA", "C4")` (United States), against `r n_m("CHN", "C4")` to `r n_m("JPN", "C4")` on the import side.
 
-Export concentration (C1) is less common than import concentration. It concerns `r n_x("EUN", "C1")` products for the EU (`r pct_x("EUN", "C1")`% of its exported products) and `r n_x("CHN", "C1")` for China (`r pct_x("CHN", "C1")`%), but more for the United States (`r n_x("USA", "C1")`, `r pct_x("USA", "C1")`%) and Japan (`r n_x("JPN", "C1")`, `r pct_x("JPN", "C1")`%). As for imports, other countries are far more concentrated, with a median share of `r med_x("C1")`% of their exported products.
+Export concentration (C1) is less common than import concentration. It concerns from `r pct_x("EUN", "C1")`% of exported products for the EU to `r pct_x("JPN", "C1")`% for Japan, against a median of `r med_x("C1")`% for other countries.
 
-World import concentration (C2) is the most selective criterion. Only `r n_x("JPN", "C2")` (Japan) to `r n_x("USA", "C2")` (United States) exported products have few buyers at the world level, against `r n_m("CHN", "C2")` to `r n_m("EUN", "C2")` imported products with few sellers. World demand is thus much less concentrated than world supply. The overlap between C1 and C2 again runs in one direction. Between `r pct_x("EUN", c("C1", "C2"), "C2")`% (EU) and `r pct_x("JPN", c("C1", "C2"), "C2")`% (Japan) of the C2 products are also concentrated in each economy's exports, but only `r pct_x("JPN", c("C1", "C2"), "C1")`% (Japan) to `r pct_x("EUN", c("C1", "C2"), "C1")`% (EU) of the products with concentrated exports have few buyers at the world level.
+World import concentration (C2) is the most selective criterion. Only `r n_x("JPN", "C2")` to `r n_x("USA", "C2")` exported products have few buyers at the world level, against `r n_m("CHN", "C2")` to `r n_m("EUN", "C2")` imported products with few sellers. World demand is thus much less concentrated than world supply.
 
-Non-substitutability (C3), based on the trade balance, is by construction the mirror of the import criterion. China is a net exporter of `r n_x("CHN", "C3")` products (`r pct_x("CHN", "C3")`% of its exported products) and the EU of `r n_x("EUN", "C3")` (`r pct_x("EUN", "C3")`%), against `r n_x("JPN", "C3")` for Japan (`r pct_x("JPN", "C3")`%) and `r n_x("USA", "C3")` for the United States (`r pct_x("USA", "C3")`%). The median share is only `r med_x("C3")`% for other countries. In the end, between `r n_x("JPN", c123)` (Japan) and `r n_x("CHN", c123)` (China) products meet C1 to C3.
+Non-substitutability (C3) mirrors the import criterion. China is a net exporter of `r pct_x("CHN", "C3")`% of its exported products, against only `r pct_x("USA", "C3")`% for the United States.
 
-Persistence (C4) is much more selective for exports than for imports. Only `r pct_x("JPN", "C4", c123)`% (Japan) to `r pct_x("USA", "C4", c123)`% (United States) of the products meeting C1 to C3 in `r venn_year(vx)` already met them in `r venn_year(vx) - 2` or `r venn_year(vx) - 1`, against `r pct_m("CHN", "C4", c123)`% to `r pct_m("JPN", "C4", c123)`% for imports. For the EU, this is the case for `r n_x("EUN", "C4")` of its `r n_x("EUN", c123)` products (`r pct_x("EUN", "C4", c123)`%), and the median share is `r med_x("C4", c123)`% for other countries. Export dependencies are thus more volatile.
+Persistence (C4) is much more selective for exports than for imports. Only `r pct_x("JPN", "C4", c123)`% (Japan) to `r pct_x("USA", "C4", c123)`% (United States) of the products meeting C1 to C3 already met them in `r venn_year(vx) - 2` or `r venn_year(vx) - 1`, against `r pct_m("CHN", "C4", c123)`% to `r pct_m("JPN", "C4", c123)`% for imports. Export dependencies are thus more volatile.
 
 ```{r}
 #| label: fig-venn-x
@@ -242,7 +247,7 @@ show_venn(venn("data/venn_X.csv", id = "iso_o",
 *Source:* GeoDep, CEPII. *Note:* Centre: products meeting C1, C2 and C3; dark circle: products that also meet C4 (dependent). Circle areas are proportional to the square root of the number of products. `r if (knitr::is_html_output()) "Hover over the diagram for the other combinations. "`Number of exported products: `r venn_total("data/venn_X.csv", "iso_o")`.
 :::
 
-## Strategic sectors
+## Strategic sectors {#sec-strategic}
 
 There is no common definition of strategic sectors, sometimes also called critical sectors. Existing studies define them either from product characteristics or from policy lists. @balteanu2026eggs and @Panon2026Inputs mainly rely on the former. They combine advanced technology products (following the US Census Bureau), goods that are crucial to the green transition and, in the first case, semiconductors. @Panon2026Inputs also add the products that the European Commission identifies as foreign dependencies and, among raw materials, keep only those with highly concentrated extra-EU supply. @garcia2025external instead align their definition with EU legislation and build an External Vulnerability Index for three supply chains covered by major policy initiatives: raw materials, semiconductors and net-zero technologies. The European Commission takes a qualitative approach based on "sensitive ecosystems" [@eucommission2021strategic; @bonnet2026foreign]. A dependency is strategic when it affects the security and safety of European citizens, public health, or access to the inputs needed for the green and digital transitions. This approach selects aerospace and defence, energy-intensive industries, renewable energy, health and digital. Overall, these studies converge on a small set of areas: advanced technologies, semiconductors, green transition technologies and critical raw materials.
 
@@ -259,6 +264,18 @@ To build an agnostic definition, we rely on existing lists for each sector (@tbl
 {{< include tables/Table_lists_strategic.md >}}
 
 Taken together, these lists define our strategic sectors. They are not mutually exclusive, and some products belong to several of them (@fig-strategic-euler). Strategic sectors cover {{< var strat_n >}} HS6 products, that is {{< var strat_prod_share >}}% of the {{< var n_products >}} products of the nomenclature, but {{< var strat_share >}}% of the value of world trade in {{< var year >}} (intra-EU trade excluded). The lists are thus broad in value, without covering all trade.
+
+The lists overlap unevenly. Of the {{< var strat_n >}} strategic products, {{< var strat_n_1list >}} ({{< var strat_pct_1list >}}%) belong to a single list, {{< var strat_n_2list >}} to two lists, {{< var strat_n_3list >}} to three and only {{< var strat_n_4list >}} to four. These three products are enriched forms of boron, lithium and helium, used mainly in the nuclear industry and in radiation detectors. The lists also differ in how much they share. Agrifood is almost self-contained: only {{< var agrifood_shared_n >}} of its {{< var agrifood_n >}} products ({{< var agrifood_shared_pct >}}%) appear in another list, mostly natural phosphates and mineral fertilisers that are also critical minerals. By contrast, about half of the energy ({{< var energy_shared_pct >}}%) and dual-use ({{< var dual_use_shared_pct >}}%) products also belong to another list.
+
+Dual-use goods are at the centre of this network. Of the {{< var strat_n_multi >}} products that belong to at least two lists, {{< var strat_multi_du_n >}} ({{< var strat_multi_du_pct >}}%) are dual-use goods. This is not only a size effect. Because the dual-use list is the longest, it would share more products with the others even if products were assigned to lists at random. We therefore compare each overlap with the one expected if two lists were drawn independently from the {{< var n_products >}} products of the nomenclature.[^lift] Only three pairs overlap more than expected, and all involve dual-use goods: with energy ({{< var overlap_dual_use_energy_ratio >}} times the expected overlap), health ({{< var overlap_dual_use_health_ratio >}}) and CRM ({{< var overlap_crm_dual_use_ratio >}}). All other pairs overlap less than expected. The products that dual-use goods share with the other lists fall into three groups:
+
+- nuclear materials and equipment, such as uranium and thorium ores, zirconium and radioactive isotopes;
+- chemicals that are both pharmaceutical inputs and chemical weapon precursors, such as organo-sulphur compounds;
+- laboratory and measuring equipment, such as centrifuges, sterilisers, biological safety cabinets and analysis instruments.
+
+Export controls thus cut across the other strategic areas. Many goods matter for energy, health or raw material security because they embody technologies that can also serve military purposes.
+
+[^lift]: If lists $A$ and $B$, with $n_A$ and $n_B$ products, were drawn independently from the $N$ = {{< var n_products >}} HS6 products, a product would belong to both with probability $(n_A/N)(n_B/N)$. The expected number of common products would then be $E_{AB} = n_A n_B / N$. We report the ratio $n_{AB}/E_{AB}$, where $n_{AB}$ is the observed number of common products. A ratio above 1 means that the two lists share more products than chance alone would imply. For dual-use goods and energy, $E_{AB}$ = {{< var dual_use_n >}} × {{< var energy_n >}} / {{< var n_products >}} ≈ {{< var overlap_dual_use_energy_exp >}}, against {{< var overlap_dual_use_energy_n >}} products observed, a ratio of {{< var overlap_dual_use_energy_ratio >}}.
 
 We only use strategic sectors for import dependencies. On the import side, the risk is a supply disruption, and for a strategic product its cost goes well beyond the product itself because it spreads to the rest of the economy. Without semiconductors, for instance, the complex machines that use them as inputs cannot be produced. On the export side, the risk is to lose the revenue earned on a market, which can threaten jobs or the survival of a whole industry, as Chinese duties on French cognac illustrate. This risk does not depend on whether the product is strategic.
 
@@ -284,7 +301,7 @@ This section describes the coverage of GeoDep, its variables, and the import and
 
 ## Coverage
 
-We use trade data from the BACI database [@CEPII:2010-23] in the HS 2022 revision (version {{< var baci_version >}}). The {{< var year >}} edition of GeoDep covers {{< var n_countries >}} countries, as importers or exporters, and {{< var n_products >}} HS6 products.[^window] The EU is treated as a single economy (EU27, with the same composition over time): intra-EU flows are excluded and EU member states do not appear separately.
+We use trade data from the BACI database [@CEPII:2010-23] in the HS 2022 revision (version {{< var baci_version >}}). The {{< var year >}} edition of GeoDep covers {{< var n_countries >}} countries, as importers or exporters, and {{< var n_products >}} HS6 products.[^window] The EU is treated as a single economy (EU27, with the same composition over time): intra-EU flows are excluded and EU member states do not appear separately. BACI reports some flows under "Other Asia, n.e.s." (code S19), which mainly covers Taiwan but may include other territories. We keep this code as it is.
 
 [^window]: Criterion C4 requires three consecutive years of data. Since BACI starts in {{< var year_min >}} in the HS 2022 revision, dependencies can only be identified for {{< var year >}}. An older revision would cover more years, but recent flows would then have to be converted to a less detailed nomenclature. The HS 2022 revision is also closer to the products traded today, as it introduces new codes for recent goods and technologies.
 
@@ -294,7 +311,7 @@ We exclude a small number of products. First, we remove natural gas (HS6 271111 
 
 ## Variables
 
-GeoDep contains two datasets for {{< var year >}}, with one row per country × HS6 product. Values are in thousands of current US dollars. GeoDep_M (@tbl-geodep-m) describes import dependencies and the strategic sector of each product; GeoDep_X (@tbl-geodep-x) describes export dependencies. Variables `c1_M`, `c2_M` and `c3_M` report $\text{HHI}^M_{dpt}$, $\text{HHI}^X_{pt}$ and $M_{dpt}/X_{dpt}$; `c1_X`, `c2_X` and `c3_X` report $\text{HHI}^X_{opt}$, $\text{HHI}^M_{pt}$ and $X_{opt}/M_{opt}$. When the denominator of C3 is zero, `c3_M` and `c3_X` are set to 9999.
+GeoDep contains two datasets for {{< var year >}}, with one row per country × HS6 product. Values are in thousands of current US dollars. GeoDep_M (@tbl-geodep-m) describes import dependencies and the strategic sector of each product; GeoDep_X (@tbl-geodep-x) describes export dependencies. Variables `c1_M`, `c2_M` and `c3_M` report $\text{HHI}^M_{dpt}$, $\text{HHI}^X_{pt}$ and $M_{dpt}/X_{dpt}$; `c1_X`, `c2_X` and `c3_X` report $\text{HHI}^X_{opt}$, $\text{HHI}^M_{pt}$ and $X_{opt}/M_{opt}$. When the denominator of C3 is zero, `c3_M` and `c3_X` are set to 9999. The main supplier of a product (`first_o`) is the origin with the largest import value in {{< var year >}}, and the main buyer (`first_d`) is the destination with the largest export value. Ties are very rare and are broken by alphabetical order of the ISO code.
 
 {{< include tables/variables_table_M.md >}}
 
@@ -312,21 +329,27 @@ GeoDep contains two datasets for {{< var year >}}, with one row per country × H
 
 ## Trade dependencies
 
+After presenting the methodology, the database and its coverage, this section illustrates the results that can be computed from GeoDep. We focus on the four main economies, but the same figures and tables can be produced for any country of the database.
+
 ### Import dependencies
 
-<!-- Text -->
+@tbl-dependent-m reports the number of import-dependent products, that is products meeting criteria C1 to C4. The EU depends on {{< var m_eun_dep_all >}} HS6 products, close to the United States ({{< var m_usa_dep_all >}}), fewer than Japan ({{< var m_jpn_dep_all >}}) and far more than China ({{< var m_chn_dep_all >}}). @tbl-dependent-m-all in the appendix gives the same figures for all products, with their main suppliers. When we restrict the count to products of strategic sectors (@sec-strategic), the numbers mechanically fall, but the ranking of the four economies does not change. Strategic products make up about one third of the import dependencies of each economy, from {{< var m_usa_strat_pct >}}% for the United States to {{< var m_chn_strat_pct >}}% for China. For the EU, the {{< var m_eun_dep_strat >}} strategic dependencies represent {{< var m_eun_share_strat >}}% of its imports of strategic products in {{< var year >}}, against {{< var m_usa_share_strat >}}% for the United States and {{< var m_jpn_share_strat >}}% for Japan. China has the fewest strategic dependencies ({{< var m_chn_dep_strat >}}) but the highest share in value ({{< var m_chn_share_strat >}}%). This comes from a single product: iron ore (HS {{< var m_chn_top_prod_hs6 >}}), {{< var m_chn_top_prod_origin_share >}}% of which comes from {{< var m_chn_top_prod_origin >}}, accounts on its own for {{< var m_chn_top_prod_share >}}% of Chinese imports of strategic products.
 
-<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
-- L'UE est bien plus dépendante de la Chine que l'importateur médian : la Chine
-  est le premier fournisseur de 63 % de ses produits dépendants, contre 48 %
-  pour l'importateur médian (@fig-first-origin).
-  Chiffres : m_first_chn_eun (63), m_first_chn_median (48).
-- Citer les MOYENNES entre importateurs, qui s'additionnent (contrairement aux
-  médianes de la figure) : en moyenne, la Chine est le premier fournisseur de
-  41 % des produits dépendants d'un pays, l'UE de 21 %, les États-Unis de 8 %,
-  toutes les autres origines de 30 %.
-  Chiffres : m_first_chn_mean, m_first_eun_mean, m_first_usa_mean, m_first_oth_mean.
--->
+The last column of @tbl-dependent-m shows where these dependencies come from, that is the first supplier of each dependent product. China clearly dominates. It is the first supplier of {{< var m_eun_top1_pct >}}% of the EU's strategic import dependencies, {{< var m_jpn_top1_pct >}}% of Japan's and {{< var m_usa_top1_pct >}}% of those of the United States. In return, the EU is the first supplier of China's strategic dependencies, but for only {{< var m_chn_eun_n >}} of its {{< var m_chn_dep_strat >}} products ({{< var m_chn_eun_pct >}}%). Chinese dependencies are fewer and also spread over more origins, such as Australia and Indonesia. The EU is also the second origin of the strategic dependencies of the United States ({{< var m_usa_eun_pct >}}%) and Japan ({{< var m_jpn_eun_pct >}}%).
+
+@fig-first-origin extends this view to all {{< var m_first_n >}} importers. For each importer, it shows the share of its dependent products for which China, the EU, the United States or another origin is the main supplier. The dominance of China is not specific to the main economies. For the median importer, China is the main supplier of {{< var m_first_chn_median >}}% of dependent products, against {{< var m_first_eun_median >}}% for the EU, {{< var m_first_usa_median >}}% for the United States and {{< var m_first_oth_median >}}% for all other origins taken together.[^mean]
+
+[^mean]: Medians are computed separately for each origin and do not sum to 100%. On average across importers, China is the main supplier of {{< var m_first_chn_mean >}}% of dependent products, the EU of {{< var m_first_eun_mean >}}%, the United States of {{< var m_first_usa_mean >}}% and other origins of {{< var m_first_oth_mean >}}%.
+
+This could simply reflect the weight of China in world trade, since it is the main exporter of {{< var chn_world_top_pct >}}% of HS6 products. A more relevant benchmark is the share of all the products a country imports, dependent or not, for which China is the main supplier. For the median importer, this share is only {{< var m_base_chn_median >}}%, and China's share is higher among dependent products than among all imported products for {{< var m_chn_premium_pct >}}% of importers. China is thus over-represented among dependencies.
+
+This over-representation mostly reflects the dominance of China in concentrated world markets [@jean2023dominance]. Dependent products are by construction products whose world exports are concentrated (C2), and China is the main exporter of many of them. Among the imported products that meet C2, China is already the main supplier of {{< var m_c2_chn_median >}}% of products for the median importer, close to its share among dependent products. The EU stands out. China is the main supplier of {{< var m_base_chn_eun >}}% of all the products the EU imports, and of {{< var m_first_chn_eun >}}% of its dependent products. The EU's reliance on China is thus much stronger in its dependencies than in its trade as a whole.
+
+China is the only large supplier that is over-represented among dependencies. Of the fifteen largest world exporters, it is the only one that weighs more in the dependencies than in the imports of most countries: {{< var m_chn_premium_pct >}}% of them, against {{< var m_eun_premium_pct >}}% for the EU, {{< var m_usa_premium_pct >}}% for the United States and at most {{< var m_premium_max_other >}}% for any other. The pattern holds for strategic products: China's share is higher among dependent products for {{< var m_chn_premium_pct_strat >}}% of importers, against at most {{< var m_premium_max_other_strat >}}% for any other large exporter.
+
+The EU is the second main supplier of dependencies. It is the main supplier of {{< var m_first_eun_median >}}% of the dependent products of the median importer, and of even more for the other large economies: {{< var m_first_eun_chn >}}% for China, {{< var m_first_eun_usa >}}% for the United States and {{< var m_first_eun_jpn >}}% for Japan. Unlike China, the EU weighs about as much among dependent products as among all imported products ({{< var m_base_eun_median >}}% for the median importer). The contrast is sharpest for neighbours. The EU is the main supplier of {{< var m_gbr_eun_all >}}% of the products imported by the United Kingdom, but of only {{< var m_gbr_eun_dep >}}% of its dependent products, and the United States of {{< var m_can_usa_all >}}% of Canadian imported products, but of only {{< var m_can_usa_dep >}}% of Canadian dependencies.
+
+For strategic products, shown in the second line for each origin in @fig-first-origin, China is the main supplier of {{< var m_first_chn_median_strat >}}% of dependent products for the median importer, against {{< var m_first_chn_median >}}% for all products, while the share of other origins rises from {{< var m_first_oth_median >}}% to {{< var m_first_oth_median_strat >}}%. Strategic dependencies are thus more spread across origins. China nevertheless remains over-represented, since it supplies only {{< var m_base_chn_median_strat >}}% of the strategic products imported by the median importer.
 
 
 {{< include tables/Table1_M_hs22.md >}}
@@ -336,27 +359,23 @@ GeoDep contains two datasets for {{< var year >}}, with one row per country × H
 #| fig-cap: !expr 'paste0("Main supplier of import-dependent products: share of each importer\x27s dependent products supplied first by China, the EU, the United States or another origin (", first_origin_year("data/first_origin_M.csv"), ")")'
 #| echo: false
 #| fig-width: 8
-#| fig-height: 3.6
+#| fig-height: 5
 # Premier fournisseur : le code est dans R/ (fonctions first_origin, show_first_origin, first_origin_n, first_origin_year).
-# Les données (data/first_origin_M.csv) sont écrites par 23_dt_import_dependencies.do.
+# Les données (data/first_origin_M.csv et _strat.csv) sont écrites par 23_dt_import_dependencies.do.
 source("R/first_origin.R", encoding = "UTF-8")
-show_first_origin(first_origin("data/first_origin_M.csv"))
+show_first_origin(first_origin("data/first_origin_M.csv", file_strat = "data/first_origin_M_strat.csv"),
+                  height = 5)
 ```
 
 ::: {.note}
-*Source:* GeoDep, CEPII. *Note:* `r first_origin_n("data/first_origin_M.csv")` importers, all products. For each origin, share of each importer's dependent products for which this origin is the main supplier (0% if it supplies none). The three origins supplying the most dependent products worldwide are shown; all other origins are grouped. For each importer (symbols), the four shares sum to 100%; the medians, computed separately for each origin, do not.
+*Source:* GeoDep, CEPII. *Note:* For each origin, upper line: all products (`r first_origin_n("data/first_origin_M.csv")` importers); lower line: products of strategic sectors (`r first_origin_n("data/first_origin_M_strat.csv")` importers with at least one strategic dependency). Share of each importer's dependent products for which this origin is the main supplier (0% if it supplies none). The three origins supplying the most dependent products worldwide are shown; all other origins are grouped. For each importer (symbols), the four shares sum to 100%; the medians, computed separately for each origin, do not.
 :::
 
-<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
-- Dual use n'est PAS le secteur le plus dépendant en part (@fig-sector-dep) :
-  beaucoup de produits dépendants en nombre (UE 51) car la liste est la plus
-  longue (~925 produits importés), mais seulement ~5 % sont dépendants. Health
-  (UE 10,8 %, JPN 12,9 %) et Agrifood (JPN 14,6 %) sont les plus dépendants.
-- La Chine est peu dépendante dans tous les secteurs (≤ 4 %), sauf Agrifood (9,7 %).
-- Chiffres : m_[pays]_sect_[secteur]_n et _share, ex. m_eun_sect_dual_use_share,
-  m_jpn_sect_agrifood_share (pays : eun chn usa jpn ; secteurs : crm dual_use
-  health agrifood energy).
--->
+Strategic products are not more often dependent than other products. The EU depends on {{< var m_eun_dep_strat >}} of the {{< var m_eun_imp_strat_n >}} strategic products it imports ({{< var m_eun_dep_strat_pctn >}}%), against {{< var m_eun_dep_all_pctn >}}% for all its imported products. The same holds for the three other economies, from {{< var m_chn_dep_strat_pctn >}}% for China to {{< var m_jpn_dep_strat_pctn >}}% for Japan. This does not come from a lower concentration of imports. The import concentration criterion (C1) is met by most imported products, strategic or not ({{< var m_c1_strat_median >}}% and {{< var m_c1_other_median >}}% for the median importer), so it hardly separates them. The difference comes from world supply. The world concentration criterion (C2) is far more selective, and it is met by only {{< var c2_strat_hs6_pct >}}% of strategic HS6 products, against {{< var c2_other_hs6_pct >}}% of other products and {{< var c2_energy_hs6_pct >}}% of energy products. Since few products pass this criterion, a gap of a few points removes a large share of the potential dependencies. Importers of strategic products thus more often have alternative suppliers on the world market. This average, however, hides large differences across sectors (@fig-sector-dep).
+
+Health and agrifood stand out. Health combines many dependent products with the highest shares for the EU ({{< var m_eun_sect_health_n >}} products, {{< var m_eun_sect_health_share >}}% of its imported health products), Japan ({{< var m_jpn_sect_health_n >}}, {{< var m_jpn_sect_health_share >}}%) and the United States ({{< var m_usa_sect_health_n >}}, {{< var m_usa_sect_health_share >}}%). China is again the exception, with only {{< var m_chn_sect_health_n >}} products ({{< var m_chn_sect_health_share >}}%). Agrifood is the only sector in which China is as dependent as the other three economies, with {{< var m_chn_sect_agrifood_n >}} products and {{< var m_chn_sect_agrifood_share >}}% of its imported agrifood products, close to the EU ({{< var m_eun_sect_agrifood_share >}}%) and the United States ({{< var m_usa_sect_agrifood_share >}}%). Japan has the highest share of the figure ({{< var m_jpn_sect_agrifood_share >}}%). Together, health and agrifood account for {{< var m_eun_ha_pct >}}% of the EU's strategic dependencies, and {{< var m_usa_ha_pct >}}% for the United States and Japan, although they make up only {{< var m_eun_ha_imp_pct >}}% of the strategic products the EU imports.
+
+Dual-use goods show the opposite pattern. The EU has {{< var m_eun_sect_dual_use_n >}} dependent dual-use products, but this mostly reflects the length of the list ({{< var list_dual_use_n >}} products). Only {{< var m_eun_sect_dual_use_share >}}% of the dual-use products imported by the EU are dependent, as for Japan, and {{< var m_usa_sect_dual_use_share >}}% for the United States.
 
 ```{r}
 #| label: fig-sector-dep
@@ -376,18 +395,15 @@ show_sector_dep(sector_dep("data/sector_dep_M.csv"))
 
 ### Export dependencies
 
-<!-- Text -->
+@tbl-dependent-x applies the same criteria to exports, without the strategic filter (@sec-strategic). Export dependencies are much rarer than import dependencies. The EU has {{< var ratio_mx_eun >}} times more import than export dependencies, Japan {{< var ratio_mx_jpn >}} times and the United States {{< var ratio_mx_usa >}} times, but China only {{< var ratio_mx_chn >}} times. China thus has more export dependencies than the EU and Japan, and as many as the United States.
 
-<!-- NOTES DE RÉDACTION (à intégrer au texte, puis supprimer)
-- Les dépendances aux exportations sont bien plus dispersées entre clients que
-  les dépendances aux importations entre fournisseurs : pour l'exportateur
-  médian, près de la moitié des produits dépendants ont un premier client autre
-  que l'UE, la Chine et les États-Unis (@fig-first-destination).
-- Moyennes entre exportateurs (elles s'additionnent) : UE 23 %, Chine 19 %,
-  États-Unis 10 %, autres destinations 48 %.
-  Chiffres : x_first_oth_median (49), x_first_eun_mean, x_first_chn_mean,
-  x_first_usa_mean, x_first_oth_mean.
--->
+In value, the ranking is reversed. EU export dependencies represent {{< var x_eun_share >}}% of its exports, {{< var x_ratio_share_eun_chn >}} times more than for China ({{< var x_chn_share >}}%). As for Chinese strategic imports, a single product drives this result. Polypeptide hormones (HS {{< var x_eun_top_prod_hs6 >}}), sold mainly to the {{< var x_eun_top_prod_dest >}}, account for {{< var x_eun_top_prod_share >}}% of the value of EU export dependencies. Lithium oxide and hydroxide (HS {{< var x_chn_top_prod_hs6 >}}), sold mainly to {{< var x_chn_top_prod_dest >}}, play the same role for China ({{< var x_chn_top_prod_share >}}%).
+
+Trade relations between the EU and China are again intertwined. China is the main buyer of {{< var x_eun_top1_n >}} of the {{< var x_eun_dep >}} EU export dependencies ({{< var x_first_chn_eun >}}%), and the EU is the main buyer of {{< var x_chn_top1_n >}} of the {{< var x_chn_dep >}} Chinese ones ({{< var x_first_eun_chn >}}%).
+
+@fig-first-destination does the same for the {{< var x_first_n >}} exporters with at least one export dependency. Buyers are far less concentrated than suppliers. For the median exporter, the EU is the main buyer of {{< var x_first_eun_median >}}% of its export dependencies and China of {{< var x_first_chn_median >}}%, two close shares, whereas on the import side China ({{< var m_first_chn_median >}}%) is far ahead of the EU ({{< var m_first_eun_median >}}%). Other destinations account for {{< var x_first_oth_median >}}% of the export dependencies of the median exporter, against {{< var m_first_oth_median >}}% of the import dependencies of the median importer. The EU is the first market of more exporters than China, which reflects its role as a major destination for the exports of the rest of the world.[^xmean]
+
+[^xmean]: On average across exporters, the EU is the main buyer of {{< var x_first_eun_mean >}}% of export dependencies, China of {{< var x_first_chn_mean >}}%, the United States of {{< var x_first_usa_mean >}}% and other destinations of {{< var x_first_oth_mean >}}%.
 
 
 {{< include tables/Table1_X_hs22.md >}}
@@ -473,6 +489,10 @@ show_sensitivity(sensitivity_curves(sc))
 :::
 
 # Appendix {.unnumbered}
+
+# Additional tables {#sec-additional-tables .appendix}
+
+{{< include tables/Table1_M_all_hs22.md >}}
 
 # Additional figures {#sec-additional-figures .appendix}
 

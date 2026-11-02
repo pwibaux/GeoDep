@@ -299,7 +299,7 @@ to_eun <- function(iso3) {
 }
 
 iso_display_name <- function(iso3) {
-  if_else(iso3 == "EUN", "European Union", iso3)
+  if_else(iso3 == "EUN", "European Union", iso_name(iso3))
 }
 
 iso_name <- function(iso3) {
@@ -346,23 +346,24 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       " | Extraction date = ", Sys.Date()
     )
   } else {
-    selection_desc <- if (length(selection) == 2) {
-      paste0("Importer = ", iso_display_name(selection[1]), " (", selection[1], "), ",
-             "Exporter = ", iso_display_name(selection[2]), " (", selection[2], ")")
-    } else if (length(selection) == 1) {
-      paste0(if (is_import) "Importer" else "Exporter", " = ",
-             iso_display_name(selection[1]), " (", selection[1], ")")
+    ## 1st selected country = the dependent one (importer for imports, exporter for exports)
+    roles <- if (is_import) c("Importer", "Leading exporter") else c("Exporter", "Leading importer")
+    selection_desc <- if (length(selection) >= 1) {
+      paste0(roles[seq_along(selection)], " = ", iso_display_name(selection), " (", selection, ")",
+             collapse = ", ")
     } else {
       "No country selected (full table for current filters)"
     }
-    
-    sector_label <- if (sector_filter == "all") "All sectors" else sector_filter
-    metric_label <- if (map_metric == "count") "Share of number of products" else "Share of trade value"
-    
+
+    sector_label <- switch(sector_filter, all = "All sectors", sect_strategic = "All strategic sectors",
+                           sector_names[[sector_filter]])
+    metric_label <- if (map_metric == "count") "Share of products" else "Share of value"
+
     selection_line <- paste0(
       "Selection used for this extract : Direction = ", if (is_import) "Imports" else "Exports",
       " | ", selection_desc,
-      " | Sector filter = ", sector_label,
+      if (is_import) paste0(" | Sector filter = ", sector_label),   # export dependencies are not sector-tagged
+      " | Dependent products only",
       " | Map metric = ", metric_label,
       " | Extraction date = ", Sys.Date()
     )
@@ -373,9 +374,7 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "Name of the dataset : ", zip_filename, "\n",
       "Format : csv\n",
       "Delimiter : ,\n\n",
-      "Release Date : \n\n", #to be modified
       "Weblink : https://www.cepii.fr/CEPII/fr/bdd_modele/bdd_modele_item.asp?id=41\n\n", #to be modified
-      "DOI : \n\n", #to be modified
       "Size (unzipped) : ", unzipped_line, "\n\n",
       "Size (zipped) : ", zipped_line, "\n\n",
       "Software : this dataset was created using Stata 16\n\n",
@@ -387,19 +386,17 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "import_dpt -- Total import value (in thousands current USD) of HS6 product p, to destination d, in year t\n",
       "c1_M -- Level of concentration of imports\n",
       "c2_M -- Level of concentration of world exports\n",
-      "c3_M -- Substitutability of exports by domestic supply\n",
-      "c4_M -- Criteria 4: c1 > 0.4 & c2 > 0.4 & c3 > 1 = 2/3 previous years\n",
+      "c3_M -- Substitutability of imports by domestic supply (ratio of imports to exports); 9999 if the country has no exports of the product (infinite ratio)\n",
+      "c4_M -- Criterion 4 (persistence): =1 if c1 > 0.4 & c2 > 0.4 & c3 > 1 in at least 2 of the last 3 years, 0 otherwise\n",
       "first_o -- ISO code of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
-      "share_M_odpt -- Share of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
+      "share_M_odpt -- Share (in %) of the leading exporter in total imports of the HS6 product p, to destination d, in year t\n",
       "dependent_M -- =1 if [c1 > 0.4 & c2 > 0.4 & c3 > 1 & c4 = 1], 0 otherwise\n",
       "sect_crm -- =1 if the HS6 product belongs to CRM UNCTAD list, 0 otherwise\n",
       "sect_dual_use -- =1 if the HS6 product belongs to Dual use EU list, 0 otherwise\n",
       "sect_health -- =1 if the HS6 product belongs to Health nomenclature list, 0 otherwise\n",
       "sect_energy -- =1 if the HS6 product belongs to Energy ECT list, 0 otherwise\n",
       "sect_agrifood -- =1 if the HS6 product belongs to Agrifood WB or Fertilisants FAO list, 0 otherwise\n",
-      "sect_other -- =1 if the HS6 product is not strategic\n\n",
-      "Additional useful information : Not applicable\n\n",
-      "Example of 1 line : Not applicable\n\n",
+      "sect_other -- =1 if the HS6 product is not strategic, 0 otherwise\n\n",
       "Licence : Creative Commons BY NC SA\n\n",
       "Reference (Please cite when using this dataset) : \n\n", #to be modified
       selection_line, "\n"
@@ -409,9 +406,7 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "Name of the dataset : ", zip_filename, "\n",
       "Format : csv\n",
       "Delimiter : ,\n\n",
-      "Release Date : \n\n", #to be modified
       "Weblink : https://www.cepii.fr/CEPII/fr/bdd_modele/bdd_modele_item.asp?id=41\n\n", #to be modified
-      "DOI : \n\n", #to be modified
       "Size (unzipped) : ", unzipped_line, "\n\n",
       "Size (zipped) : ", zipped_line, "\n\n",
       "Software : this dataset was created using Stata 16\n\n",
@@ -423,13 +418,11 @@ generate_readme <- function(direction, selection, sector_filter, map_metric,
       "export_opt -- Total export value (in thousands current USD) of HS6 product p, from origin o, in year t\n",
       "c1_X -- Level of concentration of exports\n",
       "c2_X -- Level of concentration of world imports\n",
-      "c3_X -- Substitutability of exports by domestic demand\n",
-      "c4_X -- Criteria 4: c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 = 2/3 previous years\n",
-      "first_d -- ISO code of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
-      "share_X_odpt -- Share of the first destination in total exports of the HS6 product p, from origin o, in year t\n",
+      "c3_X -- Substitutability of exports by domestic demand (ratio of exports to imports); 9999 if the country has no imports of the product (infinite ratio)\n",
+      "c4_X -- Criterion 4 (persistence): =1 if c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 in at least 2 of the last 3 years, 0 otherwise\n",
+      "first_d -- ISO code of the leading importer in total exports of the HS6 product p, from origin o, in year t\n",
+      "share_X_odpt -- Share (in %) of the leading importer in total exports of the HS6 product p, from origin o, in year t\n",
       "dependent_X -- =1 if [c1_X > 0.4 & c2_X > 0.4 & c3_X > 1 & c4_X = 1], 0 otherwise\n\n",
-      "Additional useful information : Not applicable\n\n",
-      "Example of 1 line : Not applicable\n\n",
       "Licence : Creative Commons BY NC SA\n\n",
       "Reference (Please cite when using this dataset) : \n\n",  #to be modified
       selection_line, "\n"
@@ -996,7 +989,7 @@ methodology_ui <- function() {
       
       h3("Reading the map"),
       p("The map shows, for each country, the share of its traded products that are dependent (\u201cShare of products\u201d) or the share of its trade value in those products (\u201cShare of value\u201d); darker means more dependent. Countries in mid grey have no dependent product; countries in pale grey have no data."),
-      p("Once a country is selected, the map shows its partners instead: how much of the country\u2019s dependent products each partner leads, as main supplier for imports or main destination for exports."),
+      p("Once a country is selected, the map shows its partners instead: how much of the country\u2019s dependent products each partner leads, as leading exporter for imports or leading importer for exports."),
       
       h3("Data and citation"),
       div(class = "method-ref",
@@ -1339,10 +1332,6 @@ server <- function(input, output, session) {
     export_base <- dep_export_base
     
     export_top3 <- export_base |>
-      group_by(iso_o, hs6) |>
-      mutate(dest_share = imports / export_opt) |>
-      ungroup() |>
-      filter(dest_share > 0.5) |>
       group_by(iso_o, iso_d) |>
       summarise(dep_count = n(), .groups = "drop") |>
       arrange(iso_o, desc(dep_count)) |>
@@ -1385,22 +1374,19 @@ server <- function(input, output, session) {
       summarise(total_value = sum(.data[[total_col]], na.rm = TRUE), n_products = n())
     
     base |>
-      group_by(hs6) |>
-      mutate(partner_share = .data[[value_col]] / .data[[total_col]]) |>
-      ungroup() |>
       group_by(partner_iso) |>
       summarise(
         supply_value = sum(.data[[value_col]], na.rm = TRUE),
-        n_dominant   = n_distinct(hs6[partner_share > 0.5]),
+        n_led   = n_distinct(hs6),
         .groups      = "drop"
       ) |>
       mutate(
         iso_plot    = partner_iso,
-        n_dep       = n_dominant,
+        n_dep       = n_led,
         n_total     = totals$n_products,
         dep_value   = supply_value,
         total_value = totals$total_value,
-        count_share = 100 * n_dominant / totals$n_products,
+        count_share = 100 * n_led / totals$n_products,
         value_share = 100 * supply_value / totals$total_value
       ) |>
       select(iso_plot, count_share, value_share, n_dep, n_total, dep_value, total_value)
@@ -1607,7 +1593,7 @@ server <- function(input, output, session) {
     ## selected countries are drawn last, so their border sits on top
     if (length(sel) >= 1) map_sf <- map_sf[order(map_sf$iso_plot %in% sel), ]
     direction_label <- if (input$dep_direction == "import") "import" else "export"
-    partner_role    <- if (input$dep_direction == "import") "exporter" else "destination"
+    partner_role    <- if (input$dep_direction == "import") "exporter" else "importer"
     
     fill_values <- if (metric == "count") map_sf$count_share else map_sf$value_share
     
@@ -1958,19 +1944,16 @@ server <- function(input, output, session) {
     
     base <- dep_import_base |>
       filter(iso_d == iso1) |>
-      group_by(hs6) |>
-      mutate(partner_share = imports / import_dpt) |>
-      ungroup() |>
-      mutate(is_dominant = !is.na(iso2) & iso_o == iso2 & partner_share > 0.5)
+      mutate(is_led = !is.na(iso2) & iso_o == iso2)
     
     if (nrow(base) == 0) return(NULL)
     
-    dominant_by_hs6 <- base |>
+    led_by_hs6 <- base |>
       group_by(hs6) |>
-      summarise(is_dominant = any(is_dominant), .groups = "drop")
+      summarise(is_led = any(is_led), .groups = "drop")
     
-    total_dep      <- nrow(dominant_by_hs6)
-    total_dominant <- sum(dominant_by_hs6$is_dominant)
+    total_dep      <- nrow(led_by_hs6)
+    total_led <- sum(led_by_hs6$is_led)
     
     sectors_by_hs6 <- base |>
       distinct(hs6, across(all_of(sector_cols)))
@@ -1980,7 +1963,7 @@ server <- function(input, output, session) {
       pull(hs6)
     
     total_strategic          <- length(unique(strategic_hs6))
-    total_dominant_strategic <- sum(dominant_by_hs6$is_dominant[dominant_by_hs6$hs6 %in% strategic_hs6])
+    total_led_strategic <- sum(led_by_hs6$is_led[led_by_hs6$hs6 %in% strategic_hs6])
     
     ## all products imported by iso1 in each sector (denominator of the share)
     traded_by_sector <- traded_by_country |>
@@ -1990,26 +1973,26 @@ server <- function(input, output, session) {
       filter(flag == 1) |>
       count(sector_code, name = "n_traded")
 
-    out <- dominant_by_hs6 |>
+    out <- led_by_hs6 |>
       left_join(sectors_by_hs6, by = "hs6") |>
       pivot_longer(cols = all_of(sector_cols), names_to = "sector_code", values_to = "flag") |>
       filter(flag == 1) |>
       group_by(sector_code) |>
       summarise(
         n_dep      = n(),
-        n_dominant = sum(is_dominant),
+        n_led = sum(is_led),
         .groups    = "drop"
       ) |>
       left_join(traded_by_sector, by = "sector_code") |>
       mutate(Sector_Name    = unlist(sector_names[sector_code]),
-             share_dominant = if_else(n_dep > 0, 100 * n_dominant / n_dep, 0),
+             share_led = if_else(n_dep > 0, 100 * n_led / n_dep, 0),
              share_dep      = if_else(!is.na(n_traded) & n_traded > 0, 100 * n_dep / n_traded, NA_real_)) |>
       select(-sector_code)
     
     attr(out, "total_dep")               <- total_dep
-    attr(out, "total_dominant")          <- total_dominant
+    attr(out, "total_led")          <- total_led
     attr(out, "total_strategic")         <- total_strategic          
-    attr(out, "total_dominant_strategic") <- total_dominant_strategic
+    attr(out, "total_led_strategic") <- total_led_strategic
     out
   })
   
@@ -2025,21 +2008,21 @@ server <- function(input, output, session) {
     direction_label <- "exporter"
     flow_label       <- "import"
     
-    dominant_label <- if (!is.na(iso2)) paste0("Leading supplier: ", iso_name(iso2)) else "Other suppliers"
+    led_label <- if (!is.na(iso2)) paste0("Leading exporter: ", iso_name(iso2)) else "Other exporters"
     iso1_txt <- iso_name_in_sentence(iso1)
     iso2_txt <- if (!is.na(iso2)) iso_name_in_sentence(iso2) else NA_character_
     ## same name at the start of a title: capital first letter (The United States...)
     iso1_start <- paste0(toupper(substr(iso1_txt, 1, 1)), substring(iso1_txt, 2))
     
     total_dep      <- attr(df, "total_dep")
-    total_dominant <- attr(df, "total_dominant")
+    total_led <- attr(df, "total_led")
     total_strategic          <- attr(df, "total_strategic")            
-    total_dominant_strategic <- attr(df, "total_dominant_strategic")  
+    total_led_strategic <- attr(df, "total_led_strategic")  
     
     subtitle_text <- if (!is.na(iso2)) {
       paste0(
         "Out of ", total_strategic, " strategic products for which ", iso1_txt,
-        " is import-dependent, there are ", total_dominant_strategic, " for which ",
+        " is import-dependent, there are ", total_led_strategic, " for which ",
         iso2_txt, " is the leading exporter"
       )
     } else {
@@ -2051,10 +2034,10 @@ server <- function(input, output, session) {
     subtitle_text <- wrap_title(subtitle_text, width_px, font_pt = 11, default_chars = 90, char_em = 0.56)
     
     df_long <- df |>
-      mutate(n_other = n_dep - n_dominant) |>
-      select(Sector_Name, n_dep, n_dominant, n_other) |>
-      pivot_longer(cols = c(n_dominant, n_other), names_to = "category", values_to = "n") |>
-      mutate(category = if_else(category == "n_dominant", dominant_label, "Other"))
+      mutate(n_other = n_dep - n_led) |>
+      select(Sector_Name, n_dep, n_led, n_other) |>
+      pivot_longer(cols = c(n_led, n_other), names_to = "category", values_to = "n") |>
+      mutate(category = if_else(category == "n_led", led_label, "Other"))
     
     sector_order <- df |> arrange(n_dep) |> pull(Sector_Name)
     df_long <- df_long |> mutate(Sector_Name = factor(Sector_Name, levels = sector_order))
@@ -2087,7 +2070,7 @@ server <- function(input, output, session) {
     title_text <- wrap_title(title_text, width_px, font_pt = 15, default_chars = 64, char_em = 0.68)
     
     p <- ggplot(df_long, aes(x = Sector_Name, y = n, fill = fill_key)) +
-      ## two countries: the red already shows the leading supplier, so the other sectors are faded
+      ## two countries: the red already shows the leading exporter, so the other sectors are faded
       geom_col(aes(alpha = if (!is.na(iso2) && !is.na(sel_sector)) is_sel else TRUE),
                width = 0.75, color = "white", linewidth = 0.4) +
       scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.35), guide = "none") +
@@ -2143,7 +2126,7 @@ server <- function(input, output, session) {
       )
     if (!is.na(iso2)) {
       p <- p + scale_fill_manual(values = setNames(c(IFE$accent, IFE$chart),
-                                                   c(dominant_label, "Other")))
+                                                   c(led_label, "Other")))
     } else {
       p <- p + scale_fill_manual(values = c("Other" = IFE$chart, "Selected" = IFE$accent), guide = "none")
     }
@@ -2267,7 +2250,7 @@ server <- function(input, output, session) {
     total_dep <- sum(df$n_dep)
     
     role_label   <- if (direction == "import") "import-dependent" else "export-dependent"
-    partner_role <- if (direction == "import") "leading exporters" else "leading destinations"
+    partner_role <- if (direction == "import") "leading exporters" else "leading importers"
     
     shown_isos   <- setdiff(partner_levels, "ROW")
     legend_pairs <- c(paste0(shown_isos, " = ", iso_name(shown_isos)),
@@ -2345,7 +2328,7 @@ server <- function(input, output, session) {
       title_text <- if (direction == "import") {
         paste0("Products for which ", iso1_name, " is import-dependent and ", iso2_name, " is the leading exporter")
       } else {
-        paste0("Products for which ", iso1_name, " is export-dependent and ", iso2_name, " is the first destination")
+        paste0("Products for which ", iso1_name, " is export-dependent and ", iso2_name, " is the leading importer")
       }
     }
     h3(class = "table-heading", title_text)
@@ -2469,8 +2452,7 @@ server <- function(input, output, session) {
           filter(iso_d == subject, iso_o == partner) |>
           group_by(hs6) |>
           mutate(origin_share = imports / import_dpt) |>
-          ungroup() |>
-          filter(origin_share > 0.5)
+          ungroup()
         
         if (input$sector_filter != "all") {
           result <- result |> filter(.data[[input$sector_filter]] == 1)
@@ -2481,31 +2463,30 @@ server <- function(input, output, session) {
           select(
             `HS6 Product` = hs6,
             `Description` = Description,
-            `Total Imports (World, k$)` = import_dpt,
-            `Imports from Origin (k$)` = imports,
-            `Share from Origin (%)` = share_odpt,
+            `Total imports (world, k$)` = import_dpt,
+            `Imports from exporter (k$)` = imports,
+            `Share of exporter (%)` = share_odpt,
             starts_with("sect_"),
             -sect_strategic
           ) |>
-          arrange(desc(`Imports from Origin (k$)`))
+          arrange(desc(`Imports from exporter (k$)`))
       } else {
         result <- dep_export_base |>
           filter(iso_o == subject, iso_d == partner) |>
           group_by(hs6) |>
           mutate(dest_share = imports / export_opt) |>
-          ungroup() |>
-          filter(dest_share > 0.5)
+          ungroup()
         
         result <- result |>
           mutate(share_dpto = dest_share * 100) |>
           select(
             `HS6 Product` = hs6,
             `Description` = Description,
-            `Total Exports (World, k$)` = export_opt,
-            `Exports to Destination (k$)` = imports,
-            `Share to Destination (%)` = share_dpto
+            `Total exports (world, k$)` = export_opt,
+            `Exports to importer (k$)` = imports,
+            `Share of importer (%)` = share_dpto
           ) |>
-          arrange(desc(`Exports to Destination (k$)`))
+          arrange(desc(`Exports to importer (k$)`))
       }
       return(result)
     }
@@ -2515,16 +2496,16 @@ server <- function(input, output, session) {
     if (input$dep_direction == "import") {
       base        <- dep_import_base |> filter(iso_d == iso1)
       total_col   <- "import_dpt"
-      total_label <- "Total Imports (World, k$)"
-      partner_label  <- "First exporter (% share)"
+      total_label <- "Total imports (world, k$)"
+      partner_label  <- "Leading exporter (% share)"
       partner_col <- "first_o"
       value_col   <- "imports"
       match_col   <- "iso_o"
     } else {
       base        <- dep_export_base |> filter(iso_o == iso1)
       total_col   <- "export_opt"
-      total_label <- "Total Exports (World, k$)"
-      partner_label  <- "First destination (% share)"
+      total_label <- "Total exports (world, k$)"
+      partner_label  <- "Leading importer (% share)"
       partner_col <- "first_d"
       value_col   <- "imports"
       match_col   <- "iso_d"
@@ -2588,32 +2569,35 @@ server <- function(input, output, session) {
       "HS6 Product",
       "Description",
       "Sector",
-      "First exporter (% share)",
-      "First destination (% share)",
-      "Total Imports (World, k$)",
-      "Total Exports (World, k$)"
+      "Leading exporter (% share)",
+      "Leading importer (% share)",
+      "Total imports (world, k$)",
+      "Total exports (world, k$)"
     )
     existing_front <- intersect(front_cols, names(data))
     remaining_cols <- setdiff(names(data), existing_front)
     data <- data[, c(existing_front, remaining_cols), drop = FALSE]
     
     value_cols <- intersect(
-      c("Total Imports (World, k$)", "Total Exports (World, k$)",
-        "Imports from Origin (k$)", "Exports to Destination (k$)"),
+      c("Total imports (world, k$)", "Total exports (world, k$)",
+        "Imports from exporter (k$)", "Exports to importer (k$)"),
       colnames(data)
     )
-    share_col <- intersect(c("Share from Origin (%)", "Share to Destination (%)"), colnames(data))
+    share_col <- intersect(c("Share of exporter (%)", "Share of importer (%)"), colnames(data))
     
-    order_col <- if ("Imports from Origin (k$)" %in% colnames(data)) {
-      "Imports from Origin (k$)"
-    } else if ("Exports to Destination (k$)" %in% colnames(data)) {
-      "Exports to Destination (k$)"
+    order_col <- if ("Imports from exporter (k$)" %in% colnames(data)) {
+      "Imports from exporter (k$)"
+    } else if ("Exports to importer (k$)" %in% colnames(data)) {
+      "Exports to importer (k$)"
     } else {
       value_cols[1]
     }
     
     empty_msg <- if (length(selected_countries()) == 2) {
-      "No product where the importer is dependent and this exporter is the leading supplier (>50%)."
+      if (input$dep_direction == "import")
+        "No dependent product for which the selected exporter is the leading exporter."
+      else
+        "No dependent product for which the selected importer is the leading importer."
     } else {
       "No dependent products found for this selection."
     }
@@ -2664,9 +2648,10 @@ server <- function(input, output, session) {
       exports_final |> select(-Description)
     }
     
+    ## dependent products only, as in the table on screen
     if (direction == "import") {
-      result <- full_data |> filter(iso_d == iso1)
-      
+      result <- full_data |> filter(iso_d == iso1, dependent_M == 1)
+
       if (input$sector_filter != "all" && input$sector_filter %in% names(result)) {
         result <- result |> filter(.data[[input$sector_filter]] == 1)
       }
@@ -2676,8 +2661,8 @@ server <- function(input, output, session) {
         result <- result |> filter(first_o == iso2)
       }
     } else {
-      result <- full_data |> filter(iso_o == iso1)
-      
+      result <- full_data |> filter(iso_o == iso1, dependent_X == 1)
+
       if (length(selection) == 2) {
         iso2   <- selection[2]
         result <- result |> filter(first_d == iso2)
@@ -2725,7 +2710,7 @@ server <- function(input, output, session) {
       csv_name  <- paste0(prefix, "_selection.csv")
       csv_path  <- file.path(tmp_dir, csv_name)
       
-      write_excel_csv2(selection_full_data(), csv_path) 
+      write_excel_csv(selection_full_data(), csv_path) 
       included_ref_files <- copy_reference_files(tmp_dir)
       
       size_kb_unzipped <- format_kb(file.info(csv_path)$size)
@@ -2803,7 +2788,7 @@ server <- function(input, output, session) {
         csv_path <- file.path(tmp_dir, csv_name)
         
         incProgress(0.2, detail = "Writing CSV")
-        write_excel_csv2(full_data, csv_path)
+        write_excel_csv(full_data, csv_path)
         included_ref_files <- copy_reference_files(tmp_dir)
         
         size_kb_unzipped <- format_kb(file.info(csv_path)$size)

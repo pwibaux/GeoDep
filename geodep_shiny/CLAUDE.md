@@ -186,4 +186,4 @@ Wording conventions:
 
 - Add the link to the GeoDep working paper on the Methodology page once it is published. Search for `#to be modified`.
 - The Data ↗ link and the dataset weblink currently point to `bdd_modele_item.asp?id=41`. Check them (`#to be modified`).
-- In the download README text, fill in the Release Date, the DOI and the "Reference (Please cite…)" fields (`#to be modified`).
+- In the download README text, fill in the "Reference (Please cite…)" field (`#to be modified`). The Release Date, DOI, "Additional useful information" and "Example of 1 line" fields were dropped on purpose.

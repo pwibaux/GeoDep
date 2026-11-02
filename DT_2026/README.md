@@ -7,11 +7,11 @@ GeoDep working paper (2026): `trade_dependencies_geodep.qmd`.
 | Dossier / fichier | Contenu | Écrit par |
 |---|---|---|
 | `trade_dependencies_geodep.qmd` | texte du document | nous |
+| `master.R` | lance les scripts R indépendants (aucun pour l'instant) puis compile le qmd | nous |
 | `R/` | code des graphiques et des chiffres calculés en R | nous |
 | `data/` | CSV lus par le code R | **Stata uniquement** |
 | `tables/` | tableaux `.md` inclus tels quels | **Stata uniquement** |
-| `_variables.yml` | chiffres du texte (`{{< var nom >}}`) | **Stata uniquement** |
-| `references.bib`, `cmidrule.lua`, `_quarto.yml` | bibliographie, mise en forme | nous |
+| `_variables.yml` | chiffres du texte (`{{< var nom >}}`) | **Stata uniquement** || `references.bib`, `cmidrule.lua`, `_quarto.yml` | bibliographie, mise en forme | nous |
 | `A_FAIRE.md` | liste des tâches | nous |
 
 Ne jamais modifier à la main `data/`, `tables/` ni `_variables.yml` : ils sont réécrits par

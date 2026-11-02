@@ -67,14 +67,20 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
 
 ## À faire : coordination avec Pauline
 
-- Cartes (juste avant les tableaux de 4.3) et décomposition sectorielle des
+- Cartes : faites le 02/11 (`fig-map-m`, `fig-map-x`, juste avant les tableaux
+  de 4.3 ; `R/maps.R`, données, contours et couleurs repris de `geodep_shiny` :
+  relancer `preparation.R` quand la base change).
+  Paragraphes « point mondial » en tête de 4.3.1 et 4.3.2 (en rouge, blocs
+  `.proofread`) : à relire, puis retirer le rouge. Noms de pays écrits en dur
+  (petites économies, Mozambique, pays miniers) : à revérifier si la base change.
+- Décomposition sectorielle des
   importations : c'est elle ; la prévenir de la figure par secteur stratégique
   (`fig-sector-dep`, `R/sector_dep.R`) pour éviter les doublons.
 - Application de cartes (`geodep_shiny/`) : c'est Pauline qui s'en occupe.
   Vérifié le 28/10 :
   - noms des variables : déjà à jour dans `preparation.R` et `app.R`
     (`first_o`, `share_M_odpt`, `first_d`, `share_X_odpt`, `dependent_M/X`) ;
-  - chemins : `update_data.R` (l. 12) et `export_maps.R` (l. 10) pointent
+  - chemins : `update_data.R` (l. 12) pointe
     encore vers `GeoDep_2024` ; proposé : `DROPBOX_DIR` = dossier `Dependence`
     de chacun, et le code n'ajoute que `01_GeoDep_database/...` ;
   - descriptions des variables du README téléchargeable (`app.R`, l. 387-429) :

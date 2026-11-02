@@ -333,6 +333,41 @@ After presenting the methodology, the database and its coverage, this section il
 
 ### Import dependencies
 
+```{r}
+#| label: maps-setup
+#| include: false
+# Cartes et chiffres du texte (dep_stat, dep_n_above) : le code est dans R/maps.R. Les données,
+# les contours et les couleurs viennent de l'application (geodep_shiny_inputs.rds, app.R).
+source("R/maps.R", encoding = "UTF-8")
+```
+
+<!-- En rouge : à relire (bloc .proofread : couleur en HTML, \color{red} en PDF) -->
+::: {.proofread style="color:red"}
+```{=latex}
+\begingroup\color{red}
+```
+Beyond the four main economies, import dependencies are widespread across the world (@fig-map-m). For the median country, `r dep_stat("M")`% of imported HS6 products are dependent (`r dep_stat("M", stat = mean)`% on average across the `r map_n("M")` importers). In value, dependent products account for `r dep_stat("M", "share_value")`% of the imports of the median country (`r dep_stat("M", "share_value", mean)`% on average). Both shares are fairly homogeneous across countries. Dependent products exceed a quarter of import value in only `r dep_n_above("M", 25)` countries, all of them small economies (Cayman Islands, Cook Islands, British Virgin Islands and Saint Barthélemy).
+
+Strategic products are less often dependent (@sec-strategic). For the median country, `r dep_stat("M_strat")`% of imported strategic products are dependent (`r dep_stat("M_strat", stat = mean)`% on average), against `r dep_stat("M")`% for all products, and this share is lower than for all products in every country. In value, dependent products account for `r dep_stat("M_strat", "share_value")`% of the strategic imports of the median country (`r dep_stat("M_strat", "share_value", mean)`% on average). They exceed a quarter of strategic import value only in Mozambique.
+```{=latex}
+\endgroup
+```
+:::
+
+```{r}
+#| label: fig-map-m
+#| fig-cap: !expr 'paste0("Share of imported HS6 products that are dependent, by importer (", map_year(), ")")'
+#| echo: false
+#| fig-width: 9
+#| fig-height: 5
+# Carte du monde (R/maps.R, chargé dans maps-setup).
+show_map(world_map(flow = "M"))
+```
+
+::: {.note}
+*Source:* GeoDep Explorer, IFE-CEPII. *Note:* All products, `r map_n("M")` importers. Share of the HS6 products imported by each country that are dependent (criteria C1 to C4). EU member states are shown with the value of the EU. `r if (knitr::is_html_output()) "Hover over a country for the number of products; use the toolbar to zoom."`
+:::
+
 @tbl-dependent-m reports the number of import-dependent products, that is products meeting criteria C1 to C4. The EU depends on {{< var m_eun_dep_all >}} HS6 products, close to the United States ({{< var m_usa_dep_all >}}), fewer than Japan ({{< var m_jpn_dep_all >}}) and far more than China ({{< var m_chn_dep_all >}}). @tbl-dependent-m-all in the appendix gives the same figures for all products, with their main suppliers. When we restrict the count to products of strategic sectors (@sec-strategic), the numbers mechanically fall, but the ranking of the four economies does not change. Strategic products make up about one third of the import dependencies of each economy, from {{< var m_usa_strat_pct >}}% for the United States to {{< var m_chn_strat_pct >}}% for China. For the EU, the {{< var m_eun_dep_strat >}} strategic dependencies represent {{< var m_eun_share_strat >}}% of its imports of strategic products in {{< var year >}}, against {{< var m_usa_share_strat >}}% for the United States and {{< var m_jpn_share_strat >}}% for Japan. China has the fewest strategic dependencies ({{< var m_chn_dep_strat >}}) but the highest share in value ({{< var m_chn_share_strat >}}%). This comes from a single product: iron ore (HS {{< var m_chn_top_prod_hs6 >}}), {{< var m_chn_top_prod_origin_share >}}% of which comes from {{< var m_chn_top_prod_origin >}}, accounts on its own for {{< var m_chn_top_prod_share >}}% of Chinese imports of strategic products.
 
 The last column of @tbl-dependent-m shows where these dependencies come from, that is the first supplier of each dependent product. China clearly dominates. It is the first supplier of {{< var m_eun_top1_pct >}}% of the EU's strategic import dependencies, {{< var m_jpn_top1_pct >}}% of Japan's and {{< var m_usa_top1_pct >}}% of those of the United States. In return, the EU is the first supplier of China's strategic dependencies, but for only {{< var m_chn_eun_n >}} of its {{< var m_chn_dep_strat >}} products ({{< var m_chn_eun_pct >}}%). Chinese dependencies are fewer and also spread over more origins, such as Australia and Indonesia. The EU is also the second origin of the strategic dependencies of the United States ({{< var m_usa_eun_pct >}}%) and Japan ({{< var m_jpn_eun_pct >}}%).
@@ -350,7 +385,6 @@ China is the only large supplier that is over-represented among dependencies. Of
 The EU is the second main supplier of dependencies. It is the main supplier of {{< var m_first_eun_median >}}% of the dependent products of the median importer, and of even more for the other large economies: {{< var m_first_eun_chn >}}% for China, {{< var m_first_eun_usa >}}% for the United States and {{< var m_first_eun_jpn >}}% for Japan. Unlike China, the EU weighs about as much among dependent products as among all imported products ({{< var m_base_eun_median >}}% for the median importer). The contrast is sharpest for neighbours. The EU is the main supplier of {{< var m_gbr_eun_all >}}% of the products imported by the United Kingdom, but of only {{< var m_gbr_eun_dep >}}% of its dependent products, and the United States of {{< var m_can_usa_all >}}% of Canadian imported products, but of only {{< var m_can_usa_dep >}}% of Canadian dependencies.
 
 For strategic products, shown in the second line for each origin in @fig-first-origin, China is the main supplier of {{< var m_first_chn_median_strat >}}% of dependent products for the median importer, against {{< var m_first_chn_median >}}% for all products, while the share of other origins rises from {{< var m_first_oth_median >}}% to {{< var m_first_oth_median_strat >}}%. Strategic dependencies are thus more spread across origins. China nevertheless remains over-represented, since it supplies only {{< var m_base_chn_median_strat >}}% of the strategic products imported by the median importer.
-
 
 {{< include tables/Table1_M_hs22.md >}}
 
@@ -395,6 +429,30 @@ show_sector_dep(sector_dep("data/sector_dep_M.csv"))
 
 ### Export dependencies
 
+::: {.proofread style="color:red"}
+```{=latex}
+\begingroup\color{red}
+```
+Export dependencies are rare everywhere (@fig-map-x). For the median country, only `r dep_stat("X")`% of exported HS6 products are dependent (`r dep_stat("X", stat = mean)`% on average across the `r map_n("X")` exporters). In value, the median country is in the same situation, with `r dep_stat("X", "share_value")`% of its exports in dependent products, but the average is much higher (`r dep_stat("X", "share_value", mean)`%). A few countries drive this gap. In `r dep_n_above("X", 25)` of them, dependent products exceed a quarter of export value, mostly because of a single metal ore: iron ore for Australia and Mauritania, copper ore for Chile and Peru, or bauxite for Guinea. For these exporters, few products are dependent, but they weigh heavily in their exports.
+```{=latex}
+\endgroup
+```
+:::
+
+```{r}
+#| label: fig-map-x
+#| fig-cap: !expr 'paste0("Share of exported HS6 products that are dependent, by exporter (", map_year(), ")")'
+#| echo: false
+#| fig-width: 9
+#| fig-height: 5
+# Même carte pour les exportations (R/maps.R, chargé dans maps-setup).
+show_map(world_map(flow = "X"))
+```
+
+::: {.note}
+*Source:* GeoDep Explorer, IFE-CEPII. *Note:* All products, `r map_n("X")` exporters. Share of the HS6 products exported by each country that are dependent (criteria C1 to C4). EU member states are shown with the value of the EU. `r if (knitr::is_html_output()) "Hover over a country for the number of products; use the toolbar to zoom."`
+:::
+
 @tbl-dependent-x applies the same criteria to exports, without the strategic filter (@sec-strategic). Export dependencies are much rarer than import dependencies. The EU has {{< var ratio_mx_eun >}} times more import than export dependencies, Japan {{< var ratio_mx_jpn >}} times and the United States {{< var ratio_mx_usa >}} times, but China only {{< var ratio_mx_chn >}} times. China thus has more export dependencies than the EU and Japan, and as many as the United States.
 
 In value, the ranking is reversed. EU export dependencies represent {{< var x_eun_share >}}% of its exports, {{< var x_ratio_share_eun_chn >}} times more than for China ({{< var x_chn_share >}}%). As for Chinese strategic imports, a single product drives this result. Polypeptide hormones (HS {{< var x_eun_top_prod_hs6 >}}), sold mainly to the {{< var x_eun_top_prod_dest >}}, account for {{< var x_eun_top_prod_share >}}% of the value of EU export dependencies. Lithium oxide and hydroxide (HS {{< var x_chn_top_prod_hs6 >}}), sold mainly to {{< var x_chn_top_prod_dest >}}, play the same role for China ({{< var x_chn_top_prod_share >}}%).
@@ -404,7 +462,6 @@ Trade relations between the EU and China are again intertwined. China is the mai
 @fig-first-destination does the same for the {{< var x_first_n >}} exporters with at least one export dependency. Buyers are far less concentrated than suppliers. For the median exporter, the EU is the main buyer of {{< var x_first_eun_median >}}% of its export dependencies and China of {{< var x_first_chn_median >}}%, two close shares, whereas on the import side China ({{< var m_first_chn_median >}}%) is far ahead of the EU ({{< var m_first_eun_median >}}%). Other destinations account for {{< var x_first_oth_median >}}% of the export dependencies of the median exporter, against {{< var m_first_oth_median >}}% of the import dependencies of the median importer. The EU is the first market of more exporters than China, which reflects its role as a major destination for the exports of the rest of the world.[^xmean]
 
 [^xmean]: On average across exporters, the EU is the main buyer of {{< var x_first_eun_mean >}}% of export dependencies, China of {{< var x_first_chn_mean >}}%, the United States of {{< var x_first_usa_mean >}}% and other destinations of {{< var x_first_oth_mean >}}%.
-
 
 {{< include tables/Table1_X_hs22.md >}}
 

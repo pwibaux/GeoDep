@@ -2,7 +2,7 @@
 
 # --- 21
 conc_m_eu_from_chn: 994
-conc_m_chn_from_eu: 1117
+conc_m_chn_from_eu: 1,117
 conc_m_eu_from_jpn: 40
 conc_m_jpn_from_eu: 694
 conc_m_eu_from_usa: 253
@@ -195,6 +195,9 @@ m_dep_strat_median: 6.1
 m_c1_strat_median: 83
 m_dep_other_median: 12.0
 m_c1_other_median: 87
+m_dep_all_median: 9.7
+m_c1_all_median: 85
+c2_all_hs6_pct: 18
 c2_strat_hs6_pct: 15
 c2_other_hs6_pct: 20
 c2_crm_hs6_pct: 15
@@ -400,6 +403,7 @@ x_funnel_3: 8,918
 x_funnel_4: 5,207
 x_funnel_5: 3,027
 x_funnel_pct: 0.7
+x_dep_all_median: 0.6
 x_first_n: 179
 x_first_eun_median: 16
 x_first_eun_mean: 23

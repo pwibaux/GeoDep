@@ -106,8 +106,13 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
       à valider. Note `[^smooth]` sans le test « 27 exportateurs ».
    3. Encore ouvert : relire la section ; où mettre « GeoDep inclus dans
       Baur-Flach et Arriola ».
-1. Sections encore vides (`<!-- Text -->`) : Introduction (texte autour de la
-   figure), Methodology (intro), Variables (4.2, fin), Trade dependencies
+1. Introduction rédigée (03/11) : motivation, limites de la concentration
+   bilatérale, GeoDep, quatre contributions (dont la liste stratégique), quatre
+   résultats. Chiffres ajoutés : `m_c1_all_median`, `m_dep_all_median`,
+   `c2_all_hs6_pct` (23), `x_dep_all_median` (24) ; `conc_*` avec séparateur
+   des milliers (21). Paragraphe « contributes in three ways » retiré de la
+   Literature. Reste à vérifier la nouveauté du 2e résultat (commentaire).
+   Sections encore vides (`<!-- Text -->`) : Methodology (intro), Variables (4.2, fin), Trade dependencies
    import et export (4.3), Concluding remarks.
 2. Discussion des choix de méthode (dans le texte) : C3 utilise les
    exportations comme proxy de la production (réexportations) ; l'UE comme un
@@ -118,7 +123,8 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
    engrais, Traité sur la Charte de l'énergie. Vérifier la phrase Agrifood
    « synthesises almost all existing national definitions » (semble décrire la
    liste CRM de la CNUCED).
-4. Annexe "Additional figures" : vide. La supprimer, ou y mettre des figures.
+4. FAIT (03/11) : annexe "Additional figures" remplacée par l'annexe B
+   (comparaison avec les autres méthodes).
 5. Prévenir Pauline : do-files 22, 23 et 24 modifiés le 29/10 (nouveaux
    chiffres, table d'annexe, format de la Table 2) ; un `git pull` suffit.
 

@@ -114,10 +114,14 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
    Literature. Reste à vérifier la nouveauté du 2e résultat (commentaire).
    Sections encore vides (`<!-- Text -->`) : Methodology (intro), Variables (4.2, fin), Trade dependencies
    import et export (4.3), Concluding remarks.
-2. Discussion des choix de méthode (dans le texte) : C3 utilise les
-   exportations comme proxy de la production (réexportations) ; l'UE comme un
-   seul exportateur change C2 ; nombre de produits vs valeur ; C2 et C3 côté
-   export plus fragiles ; Hong Kong et Singapour comme « 1er fournisseur ».
+2. FAIT (03/11) : intro de Methodology (marges d'ajustement C1, C2, C3) et
+   sous-partie `## Limits of the criteria` (`sec-limits`, 3.3). Décision : C3
+   n'est plus présenté comme un proxy de la production mais comme l'offre
+   redirigeable (exportations qu'on pourrait réorienter vers le marché
+   intérieur) ; limite : ne mesure pas le poids des importations dans la
+   consommation (faux positifs possibles, cf. Méjean-Rousseaux). Restent
+   ouverts : C2 et C3 côté export plus fragiles ; « GeoDep inclus dans
+   Baur-Flach et Arriola ».
 3. Bibliographie : ajouter UNCTAD SDG Pulse 2025 (liste CRM), règlement
    double usage 2021/821 et sa table de correspondance du 1/1/2026, FAOSTAT
    engrais, Traité sur la Charte de l'énergie. Vérifier la phrase Agrifood

@@ -127,7 +127,9 @@ Most of these studies, however, focus on a single country or region, such as the
 
 # Methodology
 
-<!-- Text -->
+This section defines import dependencies, export dependencies and the strategic sectors used in the analysis. The unit of observation is a country, an HS6 product and a year. All criteria rely on bilateral trade flows only and use the same thresholds for every country, so that dependencies can be compared across countries. EU member states are treated as a single country: intra-EU trade is excluded, and the imports and exports of the EU are its trade with the rest of the world.
+
+The criteria follow the logic of a supply disruption. When a supplier fails, an importer can first turn to the other suppliers it already uses, which C1 rules out when its imports are concentrated on a few origins. It can then look for new suppliers on the world market, which C2 rules out when world exports are concentrated. It can finally redirect its own exports to the domestic market, which C3 rules out when the country imports more than it exports. A product is a dependency only when none of these three margins is available, and when this situation is not temporary (C4). Export dependencies follow the same logic from the side of an exporter that loses a market. The choice of thresholds is discussed in @sec-sensitivity and the limits of the criteria in @sec-limits.
 
 ## Import dependencies
 
@@ -141,7 +143,7 @@ $$
 $$
 \text{HHI}^X_{pt} = \sum_o \left( \frac{X_{opt}}{X_{pt}} \right)^2 > 0.4
 $$
-- **C3, non-substitutability.** The ratio of imports to exports of the product by the country exceeds 1: domestic production, proxied by exports, could not replace imports.
+- **C3, non-substitutability.** The ratio of imports to exports of the product by the country exceeds 1: even if it redirected all its exports to the domestic market, the country could not replace its imports.
 $$
 \frac{M_{dpt}}{X_{dpt}} > 1
 $$
@@ -216,7 +218,7 @@ $$
 $$
 \text{HHI}^M_{pt} = \sum_d \left( \frac{M_{dpt}}{M_{pt}} \right)^2 > 0.4
 $$
-- **C3, non-substitutability.** The ratio of exports to imports of the product by the country exceeds 1: the domestic market, proxied by imports, could not absorb the exports.
+- **C3, non-substitutability.** The ratio of exports to imports of the product by the country exceeds 1: even if it redirected its exports to the domestic market and replaced all its imports, the country could not absorb them.
 $$
 \frac{X_{opt}}{M_{opt}} > 1
 $$
@@ -250,6 +252,18 @@ show_venn(venn("data/venn_X.csv", id = "iso_o",
 ::: {.note}
 *Source:* GeoDep, CEPII. *Note:* Centre: products meeting C1, C2 and C3; dark circle: products that also meet C4 (dependent). Circle areas are proportional to the square root of the number of products. `r if (knitr::is_html_output()) "Hover over the diagram for the other combinations. "`Number of exported products: `r venn_total("data/venn_X.csv", "iso_o")`.
 :::
+
+## Limits of the criteria {#sec-limits}
+
+The criteria rely on trade data only. This makes them available for all countries, but leaves some dimensions out.
+
+First, C3 measures the supply that could be redirected to the domestic market, not the weight of imports in domestic consumption. A country that produces most of what it consumes, imports the rest and exports little meets C3, although a disruption would affect only a small share of its demand. Indicators based on production data capture this dimension: @mejean2024identifying show that requiring foreign sources to account for more than half of domestic absorption removes about a quarter of the products identified by the criteria of @eucommission2021strategic. Such data are not available for all countries at the product level. GeoDep thus identifies potential dependencies, whose economic importance varies. Since the database reports the value of each criterion, users with production data can add such a filter. C3 also assumes that exports can be redirected, which holds less well when they are re-exports of goods produced elsewhere, or when the exported and imported varieties of an HS6 product are not substitutes.
+
+Second, the main supplier is the origin recorded in trade data. Trade hubs such as Hong Kong or Singapore sometimes appear as main suppliers, although they may not produce the good.
+
+Third, treating the EU as a single country is a choice with consequences. It excludes intra-EU trade from C3, and it makes the EU one large exporter in C2. Methods that count intra-EU exports as a substitute for imports identify fewer products for which China is the main supplier (@sec-comparison).
+
+Finally, dependencies are counted in products, and each HS6 product has the same weight whatever its value. We therefore also report the value of dependent imports where it is informative.
 
 ## Strategic sectors {#sec-strategic}
 

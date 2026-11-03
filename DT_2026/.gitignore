@@ -5,6 +5,7 @@
 *.pdf
 *.tex
 *.log
+*.aux
 
 # Variables d'environnement locales
 .Renviron

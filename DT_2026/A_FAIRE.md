@@ -1,4 +1,4 @@
-# DT 2026 : prochaines étapes (état au mercredi 28/10/2026)
+# DT 2026 : prochaines étapes (état au mardi 03/11/2026)
 
 Fichier dans le dépôt git GeoDep (`DT_2026/`), partagé avec la co-autrice.
 Papier : `trade_dependencies_geodep.qmd`. Code R des figures : `R/`.
@@ -50,20 +50,70 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
   texte (médianes ou % d'importateurs) ; pas de phrase sur la « gravité » ;
   tableaux par fournisseur hors du WP (graphique ou carte plus tard).
 
+## Journées du 30/10 au 03/11/2026 (en bref)
+
+- Literature (fait, dans le qmd, à commiter) :
+  - paragraphe en deux : production domestique (Commission, Baur-Flach, Vicard,
+    nous 2024 = commerce ; Méjean-Rousseaux et Bonnet 2026 = Prodcom), puis
+    arbitrage **profondeur de la mesure vs nombre de pays** (HS6 = niveau le plus
+    fin harmonisé pour tous les pays) ; concentration de l'offre mondiale
+    (Bonneau-Nakaa, Commission, Arriola, nous 2024, Jean et al., Méjean-Rousseaux) ;
+  - phrase de positionnement : on prend l'autre côté de l'arbitrage (commerce seul, HS6) ;
+  - `tbl-comparison` : cases TBC remplies (Méjean-Rousseaux, Arriola) ; ligne
+    "OECD (2025)" supprimée (= Arriola et al. 2024) ; on cite la note Bonnet
+    (`bonnet2026foreign`), plus la colonne VoxEU.
+- Exercice de réplication : critères des autres études appliqués à BACI 2024
+  pour l'UE. Tout est dans `replication_methodes_2026-10-30.md` (scripts dans
+  `replication_R/`). Messages principaux :
+  - la part de la Chine dépend surtout de la **mesure** : en nombre de produits
+    ~45-50 %, en valeur importée de Chine ~55-58 %, en valeur des produits dont
+    la Chine est 1er fournisseur ~70 % (c'est la mesure du MERICS) ;
+  - GeoDep donne 10-15 points de plus à la Chine pour deux raisons : C2
+    (concentration mondiale) et l'UE traitée comme un seul pays (la Commission
+    compte les exportations intra-UE) ;
+  - seulement 289 produits en commun avec la Commission ; GeoDep est inclus
+    dans Baur-Flach et Arriola.
+- Décisions sur la réplication :
+  - section courte dans le WP : tableau GeoDep / Commission / MERICS seulement
+    (études sur l'UE entière, critères calculables avec BACI) ; les autres
+    études expliquées dans le texte ; Bonnet en note (exposition calculée avec le
+    commerce, seuil 0,325) ;
+  - MERICS : UE comme un seul exportateur, sans lissage ; Chine seule (sans HKG/MAC) ;
+  - la discussion production vs commerce reste HORS du WP (trop de paramètres
+    changent à la fois) ;
+  - emplacement (03/11) : dans `## Sensitivity analysis`, en deux sous-parties :
+    `### Thresholds` (texte et figures 8-9 actuels) puis
+    `### Comparison with existing methods {#sec-comparison}`, avec une phrase
+    de transition (« Beyond the thresholds, the results also depend on the
+    criteria themselves… »).
+  - Brouillon en anglais de la section : §5bis du document de réplication
+    (chiffres tapés à la main : à NE PAS recopier tels quels).
+
 ## À faire : rédaction
 
+0. **Prochaine étape : section de comparaison.**
+   1. Do-file Stata (par ex. `29_dt_replication.do`) qui reproduit le tableau et
+      les chiffres du §5bis vers `_variables.yml` / `tables/`. Demander avant
+      d'écrire et vérifier que Pauline ne travaille pas sur les do-files.
+   2. Insérer la section dans Sensitivity avec `{{< var >}}`, recompiler.
+   3. Ajouter le label `{#sec-literature}` à `# Literature`.
+   4. Encore ouvert : ligne ou note « GeoDep sans persistance (C4) » (561
+      produits) ; où mettre « GeoDep inclus dans Baur-Flach et Arriola ».
 1. Sections encore vides (`<!-- Text -->`) : Introduction (texte autour de la
    figure), Methodology (intro), Variables (4.2, fin), Trade dependencies
    import et export (4.3), Concluding remarks.
-2. Revue de littérature : cases "TBC" du tableau comparatif (OECD 2025,
-   Méjean et Rousseaux, Arriola et al.). La ligne Bonnet et al. est remplie
-   d'après la note DG Trade (Chief Economist Note n° 2, mars 2026).
-   La ligne "OECD (2025)" n'a pas de référence dans `references.bib`.
-3. Bibliographie : ajouter UNCTAD SDG Pulse 2025 (liste CRM, citée en texte
-   simple dans 3.3). Décider si l'on garde la colonne VoxEU de Bonnet et al.
-   (`bonnet2026openness`, citée seulement dans la liste d'ouverture de 2) ou
-   si l'on ne cite que la note (`bonnet2026foreign`).
+2. Discussion des choix de méthode (dans le texte) : C3 utilise les
+   exportations comme proxy de la production (réexportations) ; l'UE comme un
+   seul exportateur change C2 ; nombre de produits vs valeur ; C2 et C3 côté
+   export plus fragiles ; Hong Kong et Singapour comme « 1er fournisseur ».
+3. Bibliographie : ajouter UNCTAD SDG Pulse 2025 (liste CRM), règlement
+   double usage 2021/821 et sa table de correspondance du 1/1/2026, FAOSTAT
+   engrais, Traité sur la Charte de l'énergie. Vérifier la phrase Agrifood
+   « synthesises almost all existing national definitions » (semble décrire la
+   liste CRM de la CNUCED).
 4. Annexe "Additional figures" : vide. La supprimer, ou y mettre des figures.
+5. Prévenir Pauline : do-files 22, 23 et 24 modifiés le 29/10 (nouveaux
+   chiffres, table d'annexe, format de la Table 2) ; un `git pull` suffit.
 
 ## À faire : coordination avec Pauline
 

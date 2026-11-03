@@ -92,9 +92,11 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
 ## À faire : rédaction
 
 0. **Prochaine étape : section de comparaison.**
-   1. Do-file Stata (par ex. `29_dt_replication.do`) qui reproduit le tableau et
-      les chiffres du §5bis vers `_variables.yml` / `tables/`. Demander avant
-      d'écrire et vérifier que Pauline ne travaille pas sur les do-files.
+   1. FAIT (03/11) : `29_dt_replication.do` (lancé avant 28) écrit
+      `tables/Table_methods_M.md` (`tbl-methods`) et les chiffres `rep_*` de
+      `_variables.yml`. Mêmes résultats que les scripts R. Non repris : la
+      variante MERICS avec les 27 pays comptés séparément dans le HHI mondial
+      (956 produits, BACI brut) ; à retirer de la note `[^smooth]` ou à ajouter.
    2. Insérer la section dans Sensitivity avec `{{< var >}}`, recompiler.
    3. Ajouter le label `{#sec-literature}` à `# Literature`.
    4. Encore ouvert : ligne ou note « GeoDep sans persistance (C4) » (561

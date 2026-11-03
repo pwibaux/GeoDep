@@ -529,4 +529,4 @@ rep_merics_only_c2fail: 416
 rep_merics_only_chn: 42
 rep_geo_not_merics_n: 53
 rep_geo_not_merics_fail1: 53
-rep_merics_pool_common: 864
+rep_merics_pool_same: 864

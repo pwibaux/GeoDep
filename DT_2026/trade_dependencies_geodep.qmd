@@ -86,7 +86,7 @@ highlyconc("data/highlyconc.csv")
 :::
 
 
-# Literature
+# Literature {#sec-literature}
 
 A growing literature proposes methods to identify country-specific import dependencies [@bonneau2020vulnerabilite; @eucommission2021strategic; @jaravel2021intrants; @jaravel2021strategie; @baur2022german; @Arjona2023Enhanced; @vicard2023eu; @arriola2024demystifying; @chimits2024asymmetry; @mejean2024identifying; @bonnet2026foreign]. @tbl-comparison summarises the criteria, thresholds and coverage of the main ones.
 
@@ -495,6 +495,8 @@ hf <- "data/hhi_topshare.csv"
 sc <- "data/sensitivity_curves.csv"
 ```
 
+### Thresholds
+
 The identification of dependencies rests on the choice of criteria and of their thresholds. The two concentration criteria use the same HHI threshold of {{< var thr_c1 >}} for imports (C1: concentration of the importer's suppliers, C2: concentration of world exports) and for exports (C1: concentration of the exporter's customers, C2: concentration of world imports). This threshold has a simple economic meaning. In the typical case, it marks the point where a single partner accounts for the majority of trade in a product: more than half of a country's imports come from its main supplier, more than half of its exports go to its main customer, and the main world exporter or importer holds more than half of the world market. The same value is also common in the literature [@eucommission2021strategic; @bonnet2026foreign], which makes our results comparable with previous studies. This section first shows this meaning in the data, then shows how the number of dependent products changes when each threshold moves.
 
 An HHI is not easy to interpret. @fig-hhi-topshare translates it into the share of the main partner, which is easier to read. For each level of the HHI, it shows the median share of the main partner (solid line) and its interquartile range (shaded area), for imports (upper panels) and exports (lower panels).
@@ -531,6 +533,32 @@ show_sensitivity(sensitivity_curves(sc))
 ::: {.note}
 *Source:* GeoDep, CEPII. *Note:* All products. In each column, only one threshold changes; the other two stay at their baseline values (C1 > {{< var thr_c1 >}}, C2 > {{< var thr_c2 >}}, C3 > {{< var thr_c3 >}}). Dashed line: baseline threshold. Criterion C4 also applies: a product is counted as dependent if C1 to C3, with these thresholds, are met in {{< var year >}} and in at least one of the two previous years.
 :::
+
+### Comparison with existing methods {#sec-comparison}
+
+<!-- Chiffres : 29_dt_replication.do (variables rep_* de _variables.yml, tables/Table_methods_M.md). -->
+
+Beyond the thresholds, the results also depend on the criteria themselves. The studies reviewed in @sec-literature report very different figures for the weight of China in EU dependencies, from about half to 70%. These differences can come from the criteria, but also from the data, the year, the product nomenclature and the way the weight of China is measured. To isolate the role of the criteria, we apply the criteria of other studies to our own data: BACI {{< var year >}}, at the HS6 level, with the EU as a single importer. The only differences left between the methods are then their criteria.
+
+**Selection of the methods.** Since GeoDep is applied here to the EU, we compare it with the studies that identify the dependencies of the EU as a whole and whose criteria can be computed with product-level trade data only. Two methods meet both conditions. @eucommission2021strategic, also used by @vicard2023eu, define a product as dependent when the HHI of extra-EU imports exceeds 0.4, extra-EU imports account for more than half of total EU imports, and extra-EU imports exceed total EU exports, including intra-EU exports. We apply these three criteria without the final restriction to sensitive ecosystems, which is not fully documented. @chimits2024asymmetry, for MERICS, define a dependency when imports are at least twice as large as exports, one supplier accounts for at least 30% of imports, and the HHI of world exports is at least 0.25. We apply these criteria to a single year, without the two-year smoothing of the original study.[^smooth]
+
+The other studies do not meet these conditions. @jaravel2021intrants, @baur2022german and @bonneau2020vulnerabilite focus on individual countries (France, Germany and other member states), and the first two rely on firm-level data or input-output tables. @mejean2024identifying and @bonnet2026foreign cover the EU but integrate production data from Prodcom.[^bonnet] @arriola2024demystifying define dependencies as bilateral links rather than products. At the product level, their criteria reduce to an import HHI of at least 0.2, which {{< var rep_arriola_pctn >}}% of the products imported by the EU meet.
+
+**Measuring the weight of China.** We report three measures, which correspond to those used in the literature: (a) the share of dependent products for which China is the main supplier, as in GeoDep, (b) the share of China in the imports of dependent products, as in @eucommission2021strategic, and (c) the share of dependent products for which China is the main supplier, weighted by their total import value, as in @chimits2024asymmetry (@tbl-methods). In all cases, China does not include Hong Kong and Macao.
+
+{{< include tables/Table_methods_M.md >}}
+
+The replication is close to the published figures for China. With the MERICS criteria, China is the main supplier of {{< var rep_merics_chn_n >}} EU dependencies, against 421 in 2022 in @chimits2024asymmetry, and these products make up {{< var rep_merics_chn_c >}}% of the value of EU dependencies, against roughly 70%.
+
+Two results stand out. First, the weight of China depends above all on the measure. With the criteria of the Commission, China is the main supplier of {{< var rep_ec_chn_a >}}% of dependent products, it accounts for {{< var rep_ec_chn_b >}}% of their imports, and the products it mainly supplies make up {{< var rep_ec_chn_c >}}% of their value. With the criteria of MERICS, the three shares are {{< var rep_merics_chn_a >}}%, {{< var rep_merics_chn_b >}}% and {{< var rep_merics_chn_c >}}%. The figures reported in the literature are therefore less contradictory than they seem: the 70% of MERICS and the roughly 50% of the Commission differ mostly because they use different measures.
+
+Second, whatever the measure, China weighs more in GeoDep: {{< var rep_geodep_chn_a >}}%, {{< var rep_geodep_chn_b >}}% and {{< var rep_geodep_chn_c >}}%.[^persist] Two of our choices explain this. The first is the world concentration criterion (C2). Of the {{< var rep_ec_only_n >}} products identified by the Commission but not by GeoDep, {{< var rep_ec_only_c2fail >}} fail it, and China is the main supplier of only {{< var rep_ec_only_chn >}}% of them. Likewise, {{< var rep_merics_only_c2fail >}} of the {{< var rep_merics_only_n >}} products identified by MERICS but not by GeoDep have a world export HHI between 0.25 and 0.4. The second is the treatment of the EU as a single country. The Commission counts intra-EU exports as a substitute for imports, and therefore excludes products that the EU trades heavily within the single market but imports from outside more than it exports. This criterion excludes {{< var rep_geo_not_ec_fail3 >}} of the {{< var rep_geo_not_ec_n >}} GeoDep dependencies that the Commission does not identify, and China is the main supplier of {{< var rep_geo_not_ec_chn >}}% of them.
+
+[^smooth]: The results change little with import and export values pooled over the last two years: {{< var rep_merics_pool_n >}} dependent products, {{< var rep_merics_pool_same >}} of them in common with the single year, with China the main supplier of {{< var rep_merics_pool_chn_a >}}% of them.
+
+[^bonnet]: @bonnet2026foreign use a trade-based exposure indicator for the products without production data. Applying their criteria with this indicator to all products, and converting their threshold with their own imputation formula ({{< var rep_bonnet_thr >}} instead of 0.4), gives {{< var rep_bonnet_n >}} dependent products in {{< var year >}}, with China at {{< var rep_bonnet_chn_a >}}%, {{< var rep_bonnet_chn_b >}}% and {{< var rep_bonnet_chn_c >}}% with the three measures, close to the Commission and MERICS.
+
+[^persist]: GeoDep is the only one of the three methods with a persistence criterion (C4). Without it, GeoDep identifies {{< var rep_geodep_t_n >}} dependent products in {{< var year >}}, and China weighs {{< var rep_geodep_t_chn_a >}}%, {{< var rep_geodep_t_chn_b >}}% and {{< var rep_geodep_t_chn_c >}}% with the three measures, still more than with the other methods.
 
 # Concluding remarks
 

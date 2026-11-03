@@ -97,10 +97,13 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
       `_variables.yml`. Mêmes résultats que les scripts R. Non repris : la
       variante MERICS avec les 27 pays comptés séparément dans le HHI mondial
       (956 produits, BACI brut) ; à retirer de la note `[^smooth]` ou à ajouter.
-   2. Insérer la section dans Sensitivity avec `{{< var >}}`, recompiler.
-   3. Ajouter le label `{#sec-literature}` à `# Literature`.
-   4. Encore ouvert : ligne ou note « GeoDep sans persistance (C4) » (561
-      produits) ; où mettre « GeoDep inclus dans Baur-Flach et Arriola ».
+   2. FAIT (03/11) : section `### Comparison with existing methods`
+      (`sec-comparison`) dans Sensitivity, après `### Thresholds`, chiffres en
+      `{{< var rep_* >}}`. Label `{#sec-literature}` ajouté. GeoDep sans C4 :
+      mis en note (`[^persist]`), à valider. Note `[^smooth]` sans le test
+      « 27 exportateurs ».
+   3. Encore ouvert : relire la section ; où mettre « GeoDep inclus dans
+      Baur-Flach et Arriola ».
 1. Sections encore vides (`<!-- Text -->`) : Introduction (texte autour de la
    figure), Methodology (intro), Variables (4.2, fin), Trade dependencies
    import et export (4.3), Concluding remarks.

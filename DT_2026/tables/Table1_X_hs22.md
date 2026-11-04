@@ -17,5 +17,5 @@
 : Number of export-dependent products, four main economies (2024) {#tbl-dependent-x}
 
 ::: {.note}
-*Source:* GeoDep, CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022); all products (strategic sectors only apply to imports). Export share: share of the country's exports accounted for by its dependent products. Top-3 destinations: main importers of the dependent products (number of products in brackets).
+*Source:* GeoDep, IFE-CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022); all products (strategic sectors only apply to imports). Export share: share of the country's exports accounted for by its dependent products. Top-3 destinations: main importers of the dependent products (number of products in brackets).
 :::

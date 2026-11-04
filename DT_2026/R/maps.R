@@ -124,14 +124,15 @@ world_map <- function(flow = "M") {
           legend.key.width = unit(14, "pt"), legend.key.height = unit(10, "pt"))
 }
 
-# HTML : carte interactive (chiffres au survol, zoom). PDF : carte fixe.
+# HTML : carte interactive (chiffres au survol). PDF : carte fixe.
+# Barre d'outils : seulement plein écran et téléchargement en PNG.
 show_map <- function(p) {
   if (!knitr::is_html_output()) return(p)
   girafe(ggobj = p, width_svg = 9, height_svg = 5,
          options = list(opts_hover(css = paste0("stroke:", ink, ";stroke-width:0.8px;")),
                         opts_tooltip(css = "background:#ffffff;color:#2e2b36;padding:6px 9px;border:1px solid #ccc;border-radius:4px;font-size:13px;"),
-                        opts_zoom(min = 1, max = 4),
-                        opts_toolbar(saveaspng = FALSE)))
+                        opts_toolbar(pngname = "geodep_map",
+                                     hidden = c("selection", "zoom"))))
 }
 
 # Année des données : celle du document (_variables.yml), comme dans l'application
@@ -153,4 +154,16 @@ dep_stat <- function(flow, var = "share", stat = median) {
 # Nombre de pays dont la part (en valeur par défaut) dépasse un seuil
 dep_n_above <- function(flow, threshold, var = "share_value") {
   sum(map_data[[flow]][[var]] > threshold)
+}
+# Valeur (ou rang, 1 = le plus élevé) d'un pays : n_dep, n_prod, share ou share_value
+dep_country <- function(flow, code, var = "n_dep") {
+  map_data[[flow]] %>% filter(iso3 == code) %>% pull(!!var)
+}
+dep_rank <- function(flow, code, var = "n_dep") {
+  map_data[[flow]] %>% mutate(rk = min_rank(desc(.data[[var]]))) %>% filter(iso3 == code) %>% pull(rk)
+}
+
+# Médiane de var dans un quartile (1 à 4) du nombre de produits échangés
+dep_by_size <- function(flow, q, var = "n_dep") {
+  map_data[[flow]] %>% filter(ntile(n_prod, 4) == q) %>% pull(!!var) %>% median()
 }

@@ -27,7 +27,7 @@ Le mettre à jour quand une tâche est faite ou une décision prise.
   forcée convient. Proposer des améliorations, mais demander avant les changements de fond.
 - Répondre en français.
 
-## Outils (Windows)
+## Outils (Windows, sauf mention Mac)
 
 - Stata en batch : `"<stata>" //e do fichier.do`
   (lancer depuis un dossier temporaire ; le log est écrit à côté). `<stata>` selon le poste :
@@ -36,6 +36,8 @@ Le mettre à jour quand une tâche est faite ou une décision prise.
   Entre les deux versions, un arrondi peut changer d'un dixième dans un CSV
   (vu le 28/10/2026 dans `hhi_topshare.csv`) : ne pas commiter ce bruit.
 - Quarto : `"/c/Program Files/Quarto/bin/quarto.exe" render trade_dependencies_geodep.qmd`.
+  Mac (Pauline) : Quarto de RStudio, pas dans le PATH :
+  `/Applications/RStudio.app/Contents/Resources/app/quarto/bin/quarto render trade_dependencies_geodep.qmd`.
   Erreur « os error 32 » : fichier verrouillé par Dropbox ou un autre programme, relancer.
 - Dropbox : les fichiers « en ligne uniquement » ne se déplacent pas bien en ligne de commande
   (copie fichier par fichier) ; déplacer de gros dossiers sur dropbox.com.

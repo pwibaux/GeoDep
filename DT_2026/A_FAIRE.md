@@ -1,4 +1,4 @@
-# DT 2026 : prochaines étapes (état au mardi 03/11/2026)
+# DT 2026 : prochaines étapes (état au mercredi 04/11/2026)
 
 Fichier dans le dépôt git GeoDep (`DT_2026/`), partagé avec la co-autrice.
 Papier : `trade_dependencies_geodep.qmd`. Code R des figures : `R/`.
@@ -33,8 +33,8 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
   qu'avant ; tri ajouté avant l'export de first_origin_M et first_destination_X).
 - Dropbox rangée (Graph, Map, GeoDep_Clemence dans `99_old`) ;
   `17_compare_with_app.do` testé depuis le nouvel emplacement : sans erreur.
-- Vérifier sur le poste de Pauline que son nom d'utilisateur est `wibaux` ou
-  `paulinewibaux` (en-têtes des do-files, `R/copy_pdf.R`).
+- FAIT (04/11) : sur le Mac de Pauline, l'utilisateur est `paulinewibaux` ;
+  `R/copy_pdf.R` copie bien le PDF (do-files non testés).
 
 ## Journée du 29/10/2026 (en bref)
 
@@ -88,6 +88,19 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
     criteria themselves… »).
   - Brouillon en anglais de la section : §5bis du document de réplication
     (chiffres tapés à la main : à NE PAS recopier tels quels).
+
+## Journée du 04/11/2026 (en bref)
+
+- Sources : « GeoDep, CEPII » -> « GeoDep, IFE-CEPII » dans le qmd et les 4
+  tableaux de `tables/` (modifiés à la main : corriger aussi les do-files qui
+  les écrivent, sinon le prochain passage de Stata remet l'ancien libellé).
+- Paragraphe rouge de 4.3.2 (point mondial export) : phrase ajoutée sur le lien
+  entre taille / diversification des exportations et nombre de dépendances à
+  l'export (Chine et États-Unis : 76 produits chacun, 2e derrière l'Afrique du
+  Sud ; rangs 6 et 7 sur 200 en part, Chine 200e à l'importation). Fonctions
+  `dep_country`, `dep_rank`, `dep_by_size` ajoutées dans `R/maps.R`. Phrase sur
+  le mécanisme (produits de niche à demande concentrée) écartée : non testée.
+- Mac : Quarto de RStudio (chemin dans CLAUDE.md). Recompilé sans erreur.
 
 ## À faire : rédaction
 

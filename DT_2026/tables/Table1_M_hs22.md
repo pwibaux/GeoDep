@@ -20,5 +20,5 @@
 : Number of import-dependent products, four main economies (2024) {#tbl-dependent-m}
 
 ::: {.note}
-*Source:* GeoDep, CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022). Strategic sectors: products in at least one of the lists of @tbl-stratsectors. Share of strategic imports: share, in value, of the country's imports of strategic products accounted for by its dependent products. Top-3 origins: main suppliers of the dependent strategic products (number of products in brackets).
+*Source:* GeoDep, IFE-CEPII. *Note:* Products are defined at the HS 6-digit level (revision 2022). Strategic sectors: products in at least one of the lists of @tbl-stratsectors. Share of strategic imports: share, in value, of the country's imports of strategic products accounted for by its dependent products. Top-3 origins: main suppliers of the dependent strategic products (number of products in brackets).
 :::

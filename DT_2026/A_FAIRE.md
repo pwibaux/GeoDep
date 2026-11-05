@@ -102,6 +102,30 @@ Chaîne Stata (CSV, tableaux, chiffres du texte), dans la Dropbox :
   le mécanisme (produits de niche à demande concentrée) écartée : non testée.
 - Mac : Quarto de RStudio (chemin dans CLAUDE.md). Recompilé sans erreur.
 
+## Journée du 05/11/2026 (en bref)
+
+- Table 1 (`tbl-comparison`) transposée : une ligne par critère, une colonne par
+  étude, police plus petite. Ancienne version du qmd gardée dans
+  `trade_dependencies_geodep_v1.qmd` (sauvegarde, non compilée).
+- Sources et notes des figures et tableaux en plus petit dans le PDF (`note.lua`).
+- GeoDep Explorer annoncé : phrase à la fin des contributions (introduction) et
+  sous-partie `## GeoDep Explorer {#sec-explorer}` (4.3, avant Trade
+  dependencies, qui devient 4.4). Reste : l'URL (`\[URL\]`, deux fois).
+  Pas de capture d'écran : les deux cartes viennent déjà de l'Explorer.
+  Décision : l'intro de « Trade
+  dependencies » ne renvoie pas à l'Explorer (résultats aussi réplicables avec
+  le CSV publié sur le site de l'IFE).
+- 4.4.1 raccourcie : commentaire de `fig-first-origin` passé de 7 à 4
+  paragraphes (Chine dominante, surreprésentation, littérature, UE). Retirés du
+  texte : `chn_world_top_pct`, `m_chn_premium_pct_strat`,
+  `m_premium_max_other_strat`, chiffres `rep_*` (restent en annexe B), exemple
+  Canada / États-Unis. Paragraphe stratégique sous la carte supprimé (doublon).
+  `fig-sector-dep` annoncée en tête des paragraphes sur les secteurs.
+- Restent (repérés le 05/11) : « (XX Ref) » en 4.4.1 -> `@sec-explorer` ;
+  source de la Table 2 en minuscule (« lists cited… », à corriger dans le
+  do-file qui écrit `tables/`) ; symbole ≈ absent du PDF (note 1, p. 14) ->
+  `$\approx$`.
+
 ## À faire : rédaction
 
 0. **Prochaine étape : section de comparaison.**

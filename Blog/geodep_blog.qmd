@@ -1,0 +1,90 @@
+---
+title: "GeoDep: trade dependency explorer"
+format:
+  html:
+    embed-resources: true
+    toc: false
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+<!--
+Billet de blog GeoDep (trame : blog.pdf du 05/11/2026).
+Les cartes viennent de l'application geodep_shiny (R/eu_maps.R, mêmes données, classes et couleurs).
+Les chiffres du texte sont encore tapés à la main : à vérifier, puis à calculer en R si possible.
+-->
+
+```{=html}
+<style>
+/* Source et note sous les cartes ; passages à vérifier */
+.note { font-size: 0.85em; color: #555; margin-top: 0.3em; margin-bottom: 1.5em; }
+.check { background: #fff3a3; }
+</style>
+```
+
+```{r}
+#| label: setup
+# Carte du monde : même fonction que le document de travail (vue d'ouverture de l'Explorer).
+# Carte de l'UE : R/eu_maps.R, chargé après (sa fonction show_map remplace celle du document).
+source("../DT_2026/R/maps.R", encoding = "UTF-8")
+source("R/eu_maps.R", encoding = "UTF-8")
+```
+
+## What's new
+
+GeoDep now covers 2024 and, for the first time, maps export dependencies as well as import dependencies, for 200 economies and 5,585 products (at the HS6 level, using the BACI database). A product counts as a dependency only if four conditions hold together: a country's supply is concentrated (HHI > 0.4), few countries in the world produce it (world HHI > 0.4), domestic output cannot fill the gap (imports exceed exports), and this has held in at least two of the last three years. Export dependencies apply the same criteria symmetrically: a country sells a product to few buyers, few other buyers exist, and domestic demand (proxied by domestic imports) could not absorb the extra production. The complete methodology is described in Huang, Lefebvre and Wibaux (2026).
+
+The GeoDep Explorer ([URL]) turns these data into an interactive map. Users can:
+
+- see each country's share of products, or of trade value, that is dependent, for imports or exports,
+- filter by strategic sector: critical raw materials, dual use, health, agrifood, energy (for import dependencies only),
+- click a country to see which partners lead its dependencies, then click a second country to list the products that link the two,
+- download the tables and the map.
+
+## The world in 2024
+
+Across the world, 8.7% of the \$18 trillion total are in products where the importer is dependent. Import dependence is widespread but bounded: the typical country is dependent for about 10% of the products it imports, and four countries in five fall between 7.7% and 11.4%. The European Union and the United States are dependent for 8.4% of the products they import, and Japan for 9.8%, while China is dependent for only 3.3%.
+
+```{r}
+#| label: fig-world-imports
+#| fig-cap: "Share of imported products that are dependent, by importer"
+show_map(world_map(flow = "M"), name = "geodep_world_imports")
+```
+
+::: {.note}
+Sector: all sectors. Year: 2024. EU member states are shown with the value of the EU. Hover over a country for the number of products.<br>
+*Source:* GeoDep Explorer, IFE-CEPII (2026), based on BACI (HS 2022). Please cite: Huang C., Lefebvre K. & Wibaux P. (2026), "Trade dependencies: GeoDep database", IFE-CEPII Working Paper, forthcoming.
+:::
+
+Strategic products are not more exposed than others. The typical country is dependent for 6.1% of the strategic products it imports, against 12% of the other products. Exposure varies across sectors, however (share of the sector's imported products that are dependent, typical country). Agrifood (12.7%) and health (9.3%) are the most exposed, while critical raw materials (4.1%), dual-use goods (3.9%) and energy (3.2%) are much less so. This ranking is driven by the concentration of world supply. World exports are concentrated for 20% of the agrifood products imported by the typical country and 14% of health products, against only 6 to 8% in the three other sectors.
+
+Export dependencies are much rarer, with a median of 0.6% of exported products. Large exporters are slightly above: China and the United States are dependent for 1.4% of the products they export, the European Union for 0.9% and Japan for 0.7%. Export dependencies weigh heavily, however, for commodity exporters. Dependent exports make up 88% of Guinea's exports, 40% of Chile's, 33% of Peru's and 31% of Australia's (share of export value). 
+
+## Chinese dominance
+
+China stands out on both sides of trade dependencies. As an importer, it is the clear exception, dependent for only 178 imported products. China is the main source of 44% of the dependencies of the rest of the world, behind it the EU supplying 21% of import dependencies. The United States follows far behind with 8%, then South Africa and India with about 4% each.
+
+This weight goes beyond China's role in world trade. For 88% of countries, China supplies a larger share of the products they depend on than of all the products they import, and no other large exporter is in this situation. This reflects China's dominance in markets where world supply is concentrated.
+
+China is also the main outlet for the export dependencies of others: it is the main buyer for \$278 billion of the \$424 billion of dependent exports worldwide.
+
+## The EU, between China and its neighbours
+
+The EU is import-dependent for 468 products, 8.4% of those it imports. China is the main supplier for 293 of them (63%), far ahead of the United States (30 products, 6%) and India (23 products, 5%). The largest are laptops (\$38 billion), lithium-ion batteries (\$29 billion) and solar cells (\$10 billion). A third of the EU's dependencies (154) are in strategic sectors, led by health (60 products, 11% of the health products it imports), dual use (51) and critical raw materials (37).
+
+```{r}
+#| label: fig-eu-imports
+#| fig-cap: "Share of the European Union's dependent imports led by each exporter"
+show_map(eu_map("M", strategic = TRUE), name = "geodep_eu_imports")
+```
+
+::: {.note}
+Sector: all strategic sectors. Selected: European Union (importer). Year: 2024. Hover over a country for the number of products.<br>
+*Source:* GeoDep Explorer, IFE-CEPII (2026), based on BACI (HS 2022). Please cite: Huang C., Lefebvre K. & Wibaux P. (2026), "Trade dependencies: GeoDep database", IFE-CEPII Working Paper, forthcoming.
+:::
+
+The EU is also a source of dependence for others. It is the main supplier in 15,278 dependencies worldwide, second only to China, mostly for neighbouring and smaller economies such as Switzerland, Norway and Iceland.
+
+On the export side, the EU itself depends on a single buyer for only 51 products. The largest is polypeptide hormones sold to the United States (\$18 billion), while China is the main buyer for 12 of the 51 products.
